@@ -108,6 +108,84 @@ observation, not as evidence.
 does not depend on cartridge capacity. What changed is only the consumable figure,
 in the pessimistic direction.
 
+
+## 3c. Stage 8 — the charcoal pool, and patient variability
+
+Two gaps stage 7 left open, closed.
+
+### The charcoal pool: an assumption, and a way to avoid one
+
+The source gives the charcoal **mass** (24.9 g at 1/10 scale, scaled ×10 — the
+scaling is the assumption) but **no creatinine capacity**, and no citable mg/g
+figure was found in the accessible literature.
+
+So the question is **inverted** into something that needs no assumption at all:
+
+| To outlast | Charcoal must provide |
+| --- | --- |
+| 2.22 days | **≥ 12.5 mg/g** |
+| 2.64 days | **≥ 14.8 mg/g** |
+
+That is a **specification, not a measurement** — what charcoal must beat to stop
+being the binding constraint.
+
+Then, with the flagged assumption (`ASSUMPTIONS` in `patient_variability.mjs`,
+marked as such in code, output and here):
+
+| Assumed | Charcoal life | Verdict |
+| --- | --- | --- |
+| 10 mg/g | 1.78 days | **binds first** |
+| 30 mg/g | 5.34 days | does not bind |
+| 50 mg/g | 8.89 days | does not bind |
+
+### Lifetime as a distribution
+
+Stage 7's 2.22–2.64 days was **parameter uncertainty only**. Here each patient
+draws their own urea generation from the **measured HEMO spread** (4.85 ± 1.95
+mg N/min, CV 40% — real biology, not an assumption).
+
+| | charcoal excluded | charcoal assumed |
+| --- | --- | --- |
+| **median** | **2.54 d** | **2.54 d** |
+| mean | 3.39 d | 2.88 d |
+| CV | 94% | 41% |
+| p05 / p25 / p75 / p95 | 1.51 / 1.99 / 3.50 / 7.51 | 1.51 / 1.99 / 3.50 / 5.34 |
+| maximum | 25.7 d | 5.3 d |
+| cartridges/week (median) | 2.8 | 2.8 |
+| cartridges/week (worst 5%) | 4.6 | 4.6 |
+
+**25.3% of patients exhaust a cartridge inside 2.0 days.**
+
+### Patient variability dominates parameter uncertainty — confirmed
+
+| source of spread | widens lifetime by |
+| --- | --- |
+| parameter uncertainty (HZO range) | 17% |
+| **patient variability (urea generation)** | **41%** |
+| ratio | **2.3×** |
+
+Stage 7 predicted this. **A range over parameters was the wrong shape of answer.**
+The clinical consequence: a device sized for the median (2.54 days) **fails for a
+quarter of patients.**
+
+### What bounding charcoal actually changed
+
+**It did not move the typical patient — it capped the tail.** Median unchanged at
+2.54 days; mean 3.39 → 2.88; p95 7.51 → 5.34; maximum 25.7 → 5.3. Charcoal binds
+in 9.8% of patients.
+
+**Honest caveat: the upper tail therefore rests on an assumption, not a measured
+capacity.** The median does not depend on it; the p95 and the mean do.
+
+### What is and is not scaled with generation
+
+- **scaled:** ZP and HZO loads — urea, K⁺ and phosphate all track protein intake
+- **not scaled:** the charcoal load — creatinine tracks **muscle mass**, which is
+  independent of urea generation
+
+This is a modelling choice. Scaling creatinine with urea would have been wrong in
+the opposite direction.
+
 ## 4. Results
 
 `tools/run_analysis.mjs`:
@@ -208,4 +286,6 @@ deepening the dialyzer:
 | `modules.mjs` | the three functional modules; filtration and compartment are re-exports of validated code |
 | `system.mjs` | the closed loop, the regeneration simulation, and the modality comparison |
 | `capacity_competition.mjs` | stage 7: the parallel capacity pools and their lifetimes |
+| `patient_variability.mjs` | stage 8: the charcoal assumption and the population distribution |
 | `tools/run_analysis.mjs` | checks 1–5 |
+| `tools/run_variability.mjs` | checks 6–7 |

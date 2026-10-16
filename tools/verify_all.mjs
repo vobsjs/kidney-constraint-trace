@@ -174,6 +174,34 @@ check({
   extract: grab(/required clearance\s+([\d.]+) mL\/min/),
 })
 check({
+  name: 'stage 8: charcoal requirement is derivable without assuming a capacity',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_variability.mjs'],
+  expect: '14.8 mg/g',
+  extract: grab(/to outlast 2\.64 days, charcoal must provide >= ([\d.]+ mg\/g)/),
+})
+check({
+  name: 'stage 8: lifetime distribution median is stable under the charcoal assumption',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_variability.mjs'],
+  expect: '2.54',
+  extract: grab(/median \(days\)\s+([\d.]+)\s+[\d.]+/),
+})
+check({
+  name: 'stage 8: patient variability exceeds parameter uncertainty',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_variability.mjs'],
+  expect: '2.3x',
+  extract: grab(/ratio\s+([\d.]+x)/),
+})
+check({
+  name: 'stage 8: urea generation regression guard holds',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_variability.mjs'],
+  expect: '0.9987',
+  extract: grab(/ratio \(must be ~1\.000\)\s+: ([\d.]+)/),
+})
+check({
   name: 'capacity competition: urea is not the binding pool',
   command: process.execPath,
   args: ['artificial_kidney/tools/run_analysis.mjs'],
