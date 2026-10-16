@@ -86,6 +86,28 @@ RMSE = 3.12 × 10⁻⁷ mg/L, i.e. zero up to the six-decimal rounding of the CS
    [doi:10.1128/AAC.02328-18](https://doi.org/10.1128/AAC.02328-18)
    — structural model and residual-error magnitudes.
 
+### Why this source, and what was ruled out
+
+A search for an open, digitised **per-patient** concentration-time dataset carrying
+creatinine clearance did not find one. The candidate repositories
+(`nlmixr2data`, `nlmixr2lib`) hold published parameter sets and simulated cohorts,
+not raw observations. The sources examined and rejected:
+
+| Source | Why not used |
+| --- | --- |
+| Veinstein 2013, *AAC* 57(2):977-982, [doi:10.1128/AAC.01762-12](https://doi.org/10.1128/AAC.01762-12) | Real per-patient data, but the cohort is anuric/near-anuric on haemodialysis, so renal clearance is ~0 and the CrCl *proportionality* is unidentifiable. Its per-patient Table 3 is also **absent from the openly served full text** (only the abstract is retrievable), so its individual values could not be verified and are deliberately not used. |
+| Storgaard 2026, *Kidney Int Rep*, [doi:10.1016/j.ekir.2026.107020](https://doi.org/10.1016/j.ekir.2026.107020) | Good renal-function spread, but individual concentration-time points appear only in a figure, not a table. |
+| Staatz 2005; Rodvold 1988 | Population-level clearance summaries only; no per-patient concentration-time numbers. |
+
+**External consistency anchor.** The one openly verifiable number from Veinstein
+2013 (abstract) is a volume of distribution of **0.21 ± 0.06 L/kg** in critically
+ill haemodialysed patients (single 6 mg/kg infusion over 30 min; Cmax 31.8 ± 16.8
+mg/L; C24 4.1 ± 2.3 mg/L). At the 80 kg cohort mean the reference model's V = 22.4 L
+is 0.28 L/kg, which is higher — as expected, since Duong 2022 is a general ICU
+cohort and the structural model carries no weight covariate on V. This is a
+plausibility check on the *magnitude* of V only; it is **not** part of the metric and
+does not affect the optimum.
+
 ## 3. The metric
 
 `evaluator/judge.mjs` computes a single scalar:
