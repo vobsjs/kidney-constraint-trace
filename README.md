@@ -165,11 +165,55 @@ cannot be moved.
 
 ## 5. Running it
 
-The evaluator must first be registered with the Host (see `AUTORESEARCH.md`), then:
+The evaluator is registered with the Host as `gentamicin-crcl-fit` (see
+`AUTORESEARCH.md`). To measure the metric directly:
 
 ```
-node evaluator/judge.mjs          # prints diagnostics and the metric line
+node evaluator/judge.mjs              # diagnostics plus the final-line metric
+node tools/reference_optimizer.mjs    # reference fit; writes results/reference_fit.json
 ```
 
-Baseline: RMSE = **5.5923 mg/L** with the shipped parameters. Optimum: RMSE ≈ 0 at
-the published parameters.
+### Platform blocker: `dsh-autoresearch` cannot run on Windows
+
+The plugin's `StateLayout` enforces owner-only POSIX permission bits on its state
+root and rejects any directory where `(mode & 0o077) !== 0`. On win32, Node reports
+**every** directory as `0o666`, and `chmod()` is a no-op, so that condition can
+never be satisfied — `StateLayout.open()` throws even for a freshly created empty
+temp directory. This is a property of the plugin, not of this repository:
+
+```
+platform: win32 | getuid: undefined
+open() FAILED -> StateLayoutError: state root must not be accessible by group or other users
+```
+
+The registry resolves correctly (the evaluator id is found and the run reaches
+state-layout initialisation), so this is the last barrier, and it is not fixable
+from the benchmark side. The plugin's safety documentation is Linux-oriented
+throughout (crash recovery already "requires Linux `/proc` evidence").
+
+### Reference result
+
+`tools/reference_optimizer.mjs` performs the same minimisation the autoresearch run
+would perform, using a deterministic multi-start Nelder-Mead in log-parameter space.
+
+| | RMSE (mg/L) |
+| --- | --- |
+| Shipped baseline | 5.592262 |
+| Optimum (reference fit) | 2.6970e-07 |
+| Autoresearch `target` | 1e-04 — **met** |
+
+Fitted against published:
+
+| Parameter | Fitted | Published | Deviation |
+| --- | --- | --- | --- |
+| `clearanceAtCrcl92LPerH` | 3.43999995 | 3.44 | 0.000002% |
+| `crclSlopePerMlMin` | 0.00925000 | 0.00925 | 0.000004% |
+| `volumeOfDistributionL` | 22.40000032 | 22.4 | 0.000001% |
+
+Six widely separated initial guesses all converge to this same point, with a
+worst-minus-best RMSE of 3.3e-15 — the optimum is unique and the three parameters
+are jointly identifiable from this reference curve. The residual 2.7e-07 floor is
+the six-decimal rounding of `data/reference_points.csv`, not a fitting limitation.
+
+Full detail, including every restart, is in `results/reference_fit.json`.
+

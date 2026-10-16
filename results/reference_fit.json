@@ -1,0 +1,101 @@
+{
+  "generatedBy": "tools/reference_optimizer.mjs",
+  "note": "Reference optimisation performed locally because dsh-autoresearch cannot run on win32 (StateLayout POSIX mode check is unsatisfiable).",
+  "referencePoints": 36,
+  "metric": "rmse_mg_l",
+  "target": 0.0001,
+  "baselineRmseMgL": 5.5922623465961685,
+  "optimisedRmseMgL": 2.696976006496892e-7,
+  "fitted": {
+    "clearanceAtCrcl92LPerH": 3.4399999450303946,
+    "crclSlopePerMlMin": 0.009250000374148856,
+    "volumeOfDistributionL": 22.40000031907033
+  },
+  "published": {
+    "clearanceAtCrcl92LPerH": 3.44,
+    "crclSlopePerMlMin": 0.00925,
+    "volumeOfDistributionL": 22.4
+  },
+  "maxRelativeDeviation": 4.0448524972368116e-8,
+  "multiStart": [
+    {
+      "start": [
+        3,
+        0.005,
+        25
+      ],
+      "rmseMgL": 2.696976006496892e-7,
+      "parameters": [
+        3.4399999450303946,
+        0.009250000374148856,
+        22.40000031907033
+      ]
+    },
+    {
+      "start": [
+        2,
+        0.03,
+        15
+      ],
+      "rmseMgL": 2.6969760140145615e-7,
+      "parameters": [
+        3.439999945027075,
+        0.009250000374191995,
+        22.400000319046267
+      ]
+    },
+    {
+      "start": [
+        10,
+        0.02,
+        60
+      ],
+      "rmseMgL": 2.696976018847869e-7,
+      "parameters": [
+        3.439999945024493,
+        0.009250000374128299,
+        22.40000031903044
+      ]
+    },
+    {
+      "start": [
+        8,
+        0.0005,
+        5
+      ],
+      "rmseMgL": 2.696976022040377e-7,
+      "parameters": [
+        3.439999945044085,
+        0.009250000374293828,
+        22.40000031902104
+      ]
+    },
+    {
+      "start": [
+        1,
+        0.001,
+        10
+      ],
+      "rmseMgL": 2.6969760354806835e-7,
+      "parameters": [
+        3.4399999450177385,
+        0.009250000374210423,
+        22.400000318994042
+      ]
+    },
+    {
+      "start": [
+        6,
+        0.003,
+        40
+      ],
+      "rmseMgL": 2.696976039420294e-7,
+      "parameters": [
+        3.439999945022014,
+        0.009250000374087205,
+        22.400000319077044
+      ]
+    }
+  ],
+  "meetsTarget": true
+}
