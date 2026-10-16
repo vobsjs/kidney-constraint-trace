@@ -59,25 +59,41 @@ export function makePatient({ volumeL = HEMO.ureaDistributionVolumeL, generation
   }
 }
 
-/** dC/dt for the two-pool system. `clearanceLPerMin` is 0 outside dialysis. */
-export function derivatives(patient, C1, C2, clearanceLPerMin) {
-  const { V1, V2, kcLPerMin, generationMgNPerMin } = patient
-  // Generation is split in proportion to volume.
-  const g1 = generationMgNPerMin * (V1 / (V1 + V2))
-  const g2 = generationMgNPerMin * (V2 / (V1 + V2))
-  const exchange = kcLPerMin * (C2 - C1) // into proximal
-  const dC1 = (g1 + exchange - clearanceLPerMin * C1) / V1
-  const dC2 = (g2 - exchange) / V2
-  return [dC1, dC2]
+/**
+ * Mass-based two-pool derivatives.
+ *
+ * Integrating MASS rather than concentration is what makes ultrafiltration
+ * expressible at all: the proximal volume shrinks during the session, so a
+ * concentration ODE would need a dV/dt correction term that cancels confusingly
+ * and hides whether the convective removal has been double-counted.
+ *
+ * Mass leaving the patient is the diffusive dialyzer clearance plus the
+ * ultrafiltrate itself, which carries solute at the proximal concentration. The
+ * sieving coefficient for urea is ~1, so the convective term is Quf*C1 and no
+ * separate clearance term is added on top of it.
+ *
+ * State: [M1, M2] in mg N, with V1 supplied by the caller.
+ */
+export function massDerivatives(patient, M1, M2, V1, { clearanceLPerMin = 0, ultrafiltrationLPerMin = 0 } = {}) {
+  const { V2, kcLPerMin, generationMgNPerMin } = patient
+  const C1 = M1 / V1
+  const C2 = M2 / V2
+  const g1 = generationMgNPerMin * (patient.V1 / (patient.V1 + V2))
+  const g2 = generationMgNPerMin * (V2 / (patient.V1 + V2))
+  const exchange = kcLPerMin * (C2 - C1)
+  const dM1 = g1 + exchange - clearanceLPerMin * C1 - ultrafiltrationLPerMin * C1
+  const dM2 = g2 - exchange
+  return [dM1, dM2]
 }
 
-/** One classical RK4 step. */
-function rk4(patient, C1, C2, clearanceLPerMin, dt) {
-  const [a1, a2] = derivatives(patient, C1, C2, clearanceLPerMin)
-  const [b1, b2] = derivatives(patient, C1 + (dt / 2) * a1, C2 + (dt / 2) * a2, clearanceLPerMin)
-  const [c1, c2] = derivatives(patient, C1 + (dt / 2) * b1, C2 + (dt / 2) * b2, clearanceLPerMin)
-  const [d1, d2] = derivatives(patient, C1 + dt * c1, C2 + dt * c2, clearanceLPerMin)
-  return [C1 + (dt / 6) * (a1 + 2 * b1 + 2 * c1 + d1), C2 + (dt / 6) * (a2 + 2 * b2 + 2 * c2 + d2)]
+/** One RK4 step on mass, with the proximal volume changing at a known rate. */
+function rk4Mass(patient, M1, M2, V1, V1dot, opts, dt) {
+  const half = dt / 2
+  const [a1, a2] = massDerivatives(patient, M1, M2, V1, opts)
+  const [b1, b2] = massDerivatives(patient, M1 + half * a1, M2 + half * a2, V1 + half * V1dot, opts)
+  const [c1, c2] = massDerivatives(patient, M1 + half * b1, M2 + half * b2, V1 + half * V1dot, opts)
+  const [d1, d2] = massDerivatives(patient, M1 + dt * c1, M2 + dt * c2, V1 + dt * V1dot, opts)
+  return [M1 + (dt / 6) * (a1 + 2 * b1 + 2 * c1 + d1), M2 + (dt / 6) * (a2 + 2 * b2 + 2 * c2 + d2)]
 }
 
 /**
@@ -94,42 +110,54 @@ export function simulateSession({
   sampleStepMinutes = 5,
   reboundMinutes = 60,
   seedConcentrationMgNPerL = 600,
+  ultrafiltrationL = 0,
 }) {
   const clLPerMin = dialyzerClearance({ Qb: dialyzer.Qb, Qd: dialyzer.Qd, KoA: dialyzer.KoA }) / 1000
   const dt = sampleStepMinutes
   const totalVolume = patient.V1 + patient.V2
+  const qufLPerMin = ultrafiltrationL / sessionMinutes
+  const V1End = patient.V1 - ultrafiltrationL
 
-  // Run one dialysis + rebound cycle from a given equilibrated pre-dialysis
-  // concentration. The system is linear in C, so the map C_pre -> C_eq is affine
-  // and two evaluations determine it exactly.
+  // One dialysis + rebound cycle from a given equilibrated pre-dialysis
+  // concentration. The system is LINEAR in concentration, so the map
+  // C_pre -> C_equilibrated is affine and two evaluations determine it exactly.
   function runCycle(cPre) {
-    let C1 = cPre
-    let C2 = cPre
+    let M1 = cPre * patient.V1
+    let M2 = cPre * patient.V2
+    let V1 = patient.V1
     const dialysisTrack = []
     for (let t = 0; t < sessionMinutes; t += dt) {
-      ;[C1, C2] = rk4(patient, C1, C2, clLPerMin, dt)
-      dialysisTrack.push({ minute: t + dt, C1, C2 })
+      ;[M1, M2] = rk4Mass(patient, M1, M2, V1, -qufLPerMin, { clearanceLPerMin: clLPerMin, ultrafiltrationLPerMin: qufLPerMin }, dt)
+      V1 -= qufLPerMin * dt
+      dialysisTrack.push({ minute: t + dt, C1: M1 / V1, C2: M2 / patient.V2, V1 })
     }
-    const postImmediate = C1
-    const postDistal = C2
-    const reboundTrack = [{ minute: 0, C1, C2 }]
+    const postImmediate = M1 / V1
+    const postDistal = M2 / patient.V2
+
+    const reboundTrack = [{ minute: 0, C1: postImmediate, C2: postDistal, V1 }]
     for (let t = 0; t < reboundMinutes; t += 1) {
-      ;[C1, C2] = rk4(patient, C1, C2, 0, 1)
-      reboundTrack.push({ minute: t + 1, C1, C2 })
+      ;[M1, M2] = rk4Mass(patient, M1, M2, V1, 0, {}, 1)
+      reboundTrack.push({ minute: t + 1, C1: M1 / V1, C2: M2 / patient.V2, V1 })
     }
-    const equilibrated = (C1 * patient.V1 + C2 * patient.V2) / totalVolume
-    return { postImmediate, postDistal, equilibrated, dialysisTrack, reboundTrack }
+
+    // Equilibrated concentration at the END-OF-SESSION (contracted) volume, which
+    // is the volume the clinic would sample from.
+    const contractedVolume = V1 + patient.V2
+    const equilibrated = (M1 + M2) / contractedVolume
+    // The patient regains the ultrafiltered fluid before the next session, which
+    // dilutes the same mass back into the baseline volume.
+    const restored = (M1 + M2) / totalVolume
+    return { postImmediate, postDistal, equilibrated, restored, dialysisTrack, reboundTrack }
   }
 
   // EXACT PERIODIC STEADY STATE, no cycle iteration.
   // Over a 44 h interdialytic interval the two pools fully equilibrate: the
-  // exchange time constant is V2/Kc ~ 42 min for a reference patient, i.e. about
-  // 60 time constants. So the next session starts from a single equilibrated
-  // concentration, C_pre = C_eq + G*t_inter/V.
-  const fromZero = runCycle(0) // generation-only contribution
-  const fromOne = runCycle(1) // unit initial condition
-  const alpha = fromOne.equilibrated - fromZero.equilibrated
-  const beta = fromZero.equilibrated
+  // exchange time constant is V2/Kc ~ 42 min, i.e. about 60 time constants. So the
+  // next session starts from a single equilibrated concentration.
+  const fromZero = runCycle(0)
+  const fromOne = runCycle(1)
+  const alpha = fromOne.restored - fromZero.restored
+  const beta = fromZero.restored
   const generationRise = (patient.generationMgNPerMin * interdialyticMinutes) / totalVolume
   const cPre = (beta + generationRise) / (1 - alpha)
 
@@ -142,11 +170,15 @@ export function simulateSession({
     patient,
     dialyzer,
     clearanceMlMin: clLPerMin * 1000,
+    ultrafiltrationL,
+    convectiveClearanceMlMin: qufLPerMin * 1000,
+    totalClearanceMlMin: (clLPerMin + qufLPerMin) * 1000,
     sessionMinutes,
     preMgNPerL: pre,
     postImmediateMgNPerL: final.postImmediate,
     postDistalMgNPerL: final.postDistal,
     equilibratedMgNPerL: final.equilibrated,
+    contractedVolumeL: V1End + patient.V2,
     spKtV,
     eKtV,
     reboundFraction: (final.equilibrated - final.postImmediate) / final.postImmediate,

@@ -111,17 +111,36 @@ magnitude apart in size, and the timing optimisation is the smallest of the thre
 
 ## 5. Where the model is wrong
 
-1. **The model over-predicts rebound.** 29.9% at a 4 h reference session against
-   ~21.5% implied by the published rate equation. The gap between the mechanistic
-   model and the empirical correction is **systematic and grows with session
-   length** (model gap 0.242 → 0.286 over 3–5 h; formula gap 0.218 → 0.188). The
-   exchange parameter comes from a paper whose primary subject was creatinine, and
-   it is the single most likely culprit.
-2. **No ultrafiltration.** Real sessions remove 2–3 L, which concentrates solute
-   and changes the rebound. Omitting it is a real simplification.
-3. **No access or cardiopulmonary recirculation**, so the effective clearance the
+1. **The model over-predicts rebound, and ultrafiltration is not the reason.**
+   It predicts 29.9% at a 4 h reference session against ~21.5% implied by the
+   published rate equation, with a systematic session-length trend.
+
+   Two explanations were on the table: missing fluid removal, or a wrong exchange
+   parameter. `tools/ultrafiltration_test.mjs` discriminates between them.
+   Ultrafiltration was implemented mass-based (the proximal volume shrinks, and
+   the ultrafiltrate carries solute at the proximal concentration, so the
+   convective term is `Quf·C1` and no separate clearance is added on top).
+   `uf = 0` reproduces stage 5 exactly, confirming the reimplementation.
+
+   **It makes the discrepancy worse, not better:**
+
+   | ultrafiltration | rebound | model gap | vs published gap |
+   | --- | --- | --- | --- |
+   | 0 L | 29.9% | 0.262 | 0.201 |
+   | 2.5 L (realistic) | 34.6% | 0.297 | 0.201 |
+
+   Convective clearance removes more and leaves a *larger* proximal/distal
+   disequilibrium for the rebound to undo. **One candidate explanation is
+   eliminated.**
+
+   The discrepancy therefore localises to the exchange parameter. The model
+   reproduces the published correction at **Kc ≈ 24×V**, while HEMO's urea value —
+   used here unchanged — is **16×V**, about 1.5× lower. Reported as a discrepancy
+   measure, not a fit: fitting Kc to the equation used as the cross-check would
+   make it circular. It is, however, a concrete falsifiable claim (protocol §8, P4).
+2. **No access or cardiopulmonary recirculation**, so the effective clearance the
    patient experiences is lower than the model's.
-4. **The assay noise SD (2%) is a modelling choice**, like the 3% in stage 4. Tested
+3. **The assay noise SD (2%) is a modelling choice**, like the 3% in stage 4. Tested
    at 1% and 4%; the ordering of protocols holds at all three.
 
 ## 6. The wall, and what survives hitting it
@@ -150,8 +169,11 @@ patient model against individual outcomes. I hit it. What that means concretely:
 
 | Path | Role |
 | --- | --- |
-| `patient_dialyzer.mjs` | two-pool patient + coupled dialyzer, exact periodic solve |
+| `patient_dialyzer.mjs` | two-pool patient + coupled dialyzer, mass-based, exact periodic solve |
 | `tools/validate_session_model.mjs` | checks 1–4 against the verified source values |
+| `tools/ultrafiltration_test.mjs` | tests whether ultrafiltration explains the rebound gap (it does not) |
+| `tools/study_design.mjs` | between-patient spread, within-session precision, sample size |
+| **[`PROTOCOL.md`](./PROTOCOL.md)** | **the four-draw study: design, analysis plan, sample size, resources, approvals, and an honest audit of what is still missing** |
 
 The sealed sampling benchmark (true Kc, noise seeds, designs, comparison) lives in
 the Host-side holdout outside this repository, alongside `LEDGER.md`.
