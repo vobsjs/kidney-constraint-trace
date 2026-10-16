@@ -5,11 +5,21 @@ cannot invent an evaluator command, because that would let it choose its own
 score. The registry lives in Host-owned profile configuration, so it has to be
 created outside the agent loop.
 
-## 1. Register the evaluator
+## Status: APPLIED (restart required)
 
-Add this row to `$DSH_HOME/profiles/desktop/cordis.patch.yml` (merging it into the
-existing top-level list; a profile override **replaces the whole row config**, so
-the minimal row below is only valid if it is the only `autoresearch` row).
+The row below has been merged into
+`$DSH_HOME/profiles/desktop/cordis.patch.yml`. It was validated by loading the
+plugin's own `Config`/`resolveConfig`/`evaluatorRegistry` and resolving
+`gentamicin-crcl-fit`, which succeeded; an unknown id is correctly rejected.
+
+The running DSH process still holds the pre-edit configuration, so **the app must
+be restarted** before `evaluator_id: gentamicin-crcl-fit` will resolve.
+
+## 1. The registered row
+
+A profile override **replaces the whole row config**, so the shipped deployment
+defaults from `dsh-autoresearch/cordis.patch.yml` are restated in full rather than
+relying on partial-merge behaviour.
 
 ```yaml
 - id: autoresearch
