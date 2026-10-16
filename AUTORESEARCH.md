@@ -10,7 +10,7 @@ created outside the agent loop.
 > actually bought. `dsh-autoresearch` cannot drive an interactive sequential loop
 > by itself: it proposes parameter vectors and re-scores them, it does not ask for
 > one new observation at a time. The active loop is therefore driven by the
-> Host-side simulator in the sealed holdout, and this registration remains what it
+> Host-side simulator, and this registration remains what it
 > was — the static-scoring path, now pointed at the session's data.
 
 ## Status: REGISTRATION LIVE — RUN BLOCKED BY A PLUGIN PLATFORM LIMIT
@@ -148,8 +148,8 @@ stage's ledger records the full estimator comparison. A small residual RMSE gap
 against the unweighted optimum is the expected cost of that choice.
 
 Parameter recovery, the estimator's sampling distribution, the strategy
-comparison and the external check are recorded in the Host-side `LEDGER.md`; they
-are kept out of this repository because reporting them here would disclose the
-true parameter values.
+comparison and the external check are recorded in `PK_LEDGER.md`, which is now
+part of this package. It discloses the true parameter values and the seed, which is
+why this benchmark is retired as a sealed evaluation -- see the banner above.
 
 

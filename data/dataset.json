@@ -16,13 +16,14 @@
     "additive_mg_l": 0.056,
     "citation": "Bos JC et al. Antimicrob Agents Chemother 2019;63(4):e02328-18, Table S1 (Proportional 32%, Additive 0.056 mg/L), carried forward by Duong A et al. Pharmaceutics 2022;14(7):1426 for the Bos structural model.",
     "seeded": true,
-    "seed_location": "Host-side holdout provenance.json. The seed is deliberately NOT stored in this repository: with the seed and this error model the noise-free curve could be reconstructed exactly, which would defeat the benchmark."
+    "seed_location": "PUBLISHED. The seed is recorded in PK_LEDGER.md, which is part of this package. It was withheld while stages 1-3 were an active evaluation; that seal is retired, so the benchmark is no longer usable as a blind test. With the seed and this error model the noise-free curve can be reconstructed exactly.",
+    "benchmark_status": "RETIRED as a sealed evaluation. See the banner in PK_BENCHMARK.md."
   },
   "noise_free_holdout": {
-    "role": "External check ONLY. Never read by evaluator/judge.mjs, never used for fitting, and located outside the Git repository so it is outside the autoresearch worktree.",
-    "location": "Host-side holdout directory; deliberately not recorded in this repository.",
+    "role": "External check ONLY. Never read by evaluator/judge.mjs and never used for fitting. Still located outside the Git repository, so the numbers in PK_LEDGER.md cannot all be re-run from a clone of this package alone.",
+    "location": "Host-side holdout directory; not recorded in this repository.",
     "sha256": "ef9b1c438267cc6ad66c96ef6f0a9b6f8c8b4c7b93b614f498ce78e610d25358",
-    "contains": "the noise-free curve, the seed and generator, the simulator, the sampling strategies, all comparison experiments, and the full ledger",
+    "contains": "the noise-free curve, the generator, the noise simulator, the sampling strategies and all comparison experiments. The LEDGER was formerly here and has since moved into the repository.",
     "identified_by": "sha256 of the noise-free CSV, so the exact file can be audited without being disclosed"
   },
   "this_file_sha256_note": "The noisy 36-point table that earlier stages committed here has been removed: leaving it in the worktree would let a chooser pre-read the whole dataset and turn the active loop back into a static fit. The simulator that owns it lives in the Host-side holdout.",
@@ -41,7 +42,7 @@
   "units": { "time": "h", "dose": "mg", "concentration": "mg/L", "volume": "L", "clearance": "L/h" },
   "sources": [
     {
-      "role": "structural model, cohort descriptors (Table 1), and the parameter values held in the Host-side holdout",
+      "role": "structural model and cohort descriptors (Table 1). The parameter values derived from them are published in PK_LEDGER.md.",
       "citation": "Duong A, Simard C, Williamson D, Marsot A. Model Re-Estimation: An Alternative for Poor Predictive Performance during External Evaluations? Example of Gentamicin in Critically Ill Patients. Pharmaceutics 2022;14(7):1426.",
       "doi": "10.3390/pharmaceutics14071426"
     },

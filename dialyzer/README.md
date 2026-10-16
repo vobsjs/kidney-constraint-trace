@@ -135,5 +135,7 @@ the model has exactly one device-solute parameter:
 | `data/manufacturer_clearances.json` | 120 real published clearance values, 2 manufacturers |
 | `tools/validate_against_manufacturers.mjs` | Q1–Q4 checks against that data |
 
-The sealed benchmark (true `KoA`, noise realisation, designs, comparison) lives in
-the Host-side holdout outside this repository, alongside `LEDGER.md`.
+The benchmark material (the noise simulator, the sampling designs and the comparison
+experiments) remains in a Host-side holdout outside this repository, so those numbers
+cannot be re-run from a clone of this package alone. `LEDGER.md` -- the decision
+record -- is now in this package.

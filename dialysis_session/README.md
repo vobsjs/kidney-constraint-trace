@@ -176,5 +176,7 @@ patient model against individual outcomes. I hit it. What that means concretely:
 | `tools/study_design.mjs` | between-patient spread, within-session precision, sample size |
 | **[`PROTOCOL.md`](./PROTOCOL.md)** | **the four-draw study: design, analysis plan, sample size, resources, approvals, and an honest audit of what is still missing** |
 
-The sealed sampling benchmark (true Kc, noise seeds, designs, comparison) lives in
-the Host-side holdout outside this repository, alongside `LEDGER.md`.
+The benchmark material (the noise simulator, the sampling designs and the comparison
+experiments) remains in a Host-side holdout outside this repository, so those numbers
+cannot be re-run from a clone of this package alone. `LEDGER.md` -- the decision
+record, and the document a clinical collaborator should read first -- is in this package.

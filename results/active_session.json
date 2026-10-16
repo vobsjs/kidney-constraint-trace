@@ -1,7 +1,7 @@
 {
   "benchmark": "kidney-constraint-trace active-experiment loop",
   "chooser": "language model, deciding sequentially from the observations it has seen",
-  "seed": "held in the Host-side holdout provenance.json",
+  "seed": "published in PK_LEDGER.md; the benchmark is retired as a sealed evaluation",
   "budget": 12,
   "observationsUsed": 12,
   "finalEstimate": {

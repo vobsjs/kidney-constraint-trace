@@ -1,5 +1,19 @@
 # Gentamicin creatinine-clearance PK benchmark — active experiment loop
 
+> ## ⚠ RETIRED as a sealed evaluation
+>
+> This benchmark was built to be run against an autonomous agent that must not be
+> able to read the answer. That seal has been retired — see
+> [`PK_LEDGER.md`](./PK_LEDGER.md), which is now published inside this package and
+> **contains the true parameter values and the noise seed**.
+>
+> **The specification below is still accurate and the code still runs**, but a
+> candidate that reads this repository can look up the answer directly. Do not use
+> stages 1–3 as an evaluation without re-sealing.
+>
+> It remains valid as a methodological record, and as the origin of the estimator
+> and the sampling-design machinery that stages 4 and 5 reuse unchanged.
+
 A **sequential experiment-design benchmark**. A chooser is given a budget of
 **12 noisy observations** and must decide, one at a time, which creatinine-clearance
 stratum and which sampling time to measure next, in order to estimate three
@@ -70,9 +84,9 @@ y_obs = y_pred + SD * z,      SD = sqrt((0.32 * y_pred)^2 + 0.056^2),   z ~ N(0,
 The error model is not invented. Duong 2022 states the error model for the Bos
 structural row as "Mixed" but does not re-report magnitudes, so the original Bos
 2019 values apply. The noise realisation is fixed by a seed, so a session is
-byte-for-byte reproducible; **the seed is deliberately not stored in this
-repository**, because with the seed and the error model the whole noise-free curve
-could be reconstructed.
+byte-for-byte reproducible. **The seed is now published in
+[`PK_LEDGER.md`](./PK_LEDGER.md)**; it was withheld while this benchmark was an
+active evaluation, and that seal is retired (§ title banner).
 
 ## 4. The protocol
 
@@ -85,33 +99,36 @@ This is what makes the loop *active* rather than a fit to a supplied table:
 4. The chooser sees only its own collected observations and may compute anything
    from them. It cannot read ahead.
 
-The Host-side simulator enforces all four; see the sealed holdout below.
+The Host-side simulator enforces all four; see below.
 
-## 5. The sealed holdout
+## 5. The holdout — seal retired
 
-Three things are kept **outside this Git repository**, therefore outside the
-`dsh-autoresearch` worktree, in a Host-side directory whose location is not
-recorded here:
+**This section described a seal that no longer exists.** While stages 1–3 were an
+active evaluation, three things were kept outside the repository so that a
+candidate agent could not read the answer:
 
 - the **noise-free curve**, used only for the external check;
 - the **true parameter values**;
 - the **seed and generator**.
 
-The noise-free curve is identified publicly by hash so it can be audited without
-being disclosed:
+The first two are still outside the repository. **The true parameter values and the
+seed are now published here**, in [`PK_LEDGER.md`](./PK_LEDGER.md) — that is why
+this benchmark is retired as an evaluation (§ title banner).
+
+The noise-free curve remains identified by hash rather than disclosed, so the exact
+file can be audited without being published:
 
 ```
 noise-free curve SHA-256: ef9b1c438267cc6ad66c96ef6f0a9b6f8c8b4c7b93b614f498ce78e610d25358
 ```
 
-The holdout also holds the strategy implementations, the simulator, the
-comparison experiments and `LEDGER.md` — the full decision record with every
-result and reproduction command.
+The remaining Host-side material — the strategy implementations, the noise
+simulator and the comparison experiments — is still outside this repository, so the
+numbers in `PK_LEDGER.md` cannot all be re-run from a clone of this package alone.
+That is recorded here rather than left as a surprise.
 
 **Honest limitation.** A Git worktree does not confine filesystem access — the
-plugin says so itself. Keeping the holdout outside the repository and unnamed
-here makes it unreachable through any declared input, but this is a
-*protocol-level* boundary, not a sandbox.
+plugin says so itself. The boundary was always protocol-level, not a sandbox.
 
 ## 6. The metric
 

@@ -66,23 +66,29 @@ Full detail: [`dialysis_session/PROTOCOL.md`](./dialysis_session/PROTOCOL.md).
 **Estimated path to first patient: 3–6 months**, dominated by ethics review and
 identifying a PI.
 
-## 4. Where the decision records are — please read
+## 4. The decision records — please read
 
 Each stage has a detailed ledger recording every design decision, its rationale,
-what failed, and what was assumed. **These are currently held outside this
-repository**, in a Host-side directory, because they were written while the
-repository was also a sealed benchmark against an autonomous agent that must not
-be able to read the answers.
+what failed, and what was assumed. **All three are in this package.**
 
-- `dialysis_session/LEDGER.md` — stage 5 (the clinical stage: patient model,
-  rebound, the caught bug, the ultrafiltration negative result, the study design)
-- `dialyzer/LEDGER.md` — stage 4
-- `kidney-constraint-trace/LEDGER.md` — stages 1–3
+| Ledger | Covers |
+| --- | --- |
+| [`dialysis_session/LEDGER.md`](./dialysis_session/LEDGER.md) | **stage 5 — the clinical stage.** The patient model, the post-dialysis rebound result, a bug that produced a publishable-looking false positive and how it was caught, the ultrafiltration negative result, the study-design calculation, and every assumption. **Start here if you read only one.** |
+| [`dialyzer/LEDGER.md`](./dialyzer/LEDGER.md) | stage 4 — the device model, its validation against 120 manufacturer measurements, and the elasticity landscape that makes operating-point choice matter |
+| [`PK_LEDGER.md`](./PK_LEDGER.md) | stages 1–3 — the original pharmacokinetic benchmark, including the negative result that active design cannot beat a good fixed lattice for that problem |
 
-**Action needed:** for a clinical handover the ledgers should be *inside* the
-package. Moving them changes a boundary the project owner explicitly set, so it
-has been left as a decision rather than done unilaterally. Ask for them if you
-want them included.
+These were originally held **outside** the repository, because the repository was
+also a sealed benchmark against an autonomous agent that must not be able to read
+the answers. **That seal has been retired and the records moved in**, on the
+grounds that the evaluation phase is over and a decision record belongs with the
+work it documents.
+
+One consequence is stated plainly rather than buried: publishing `PK_LEDGER.md`
+discloses the stages 1–3 benchmark's true parameter values and noise seed, so
+**those stages are retired as a sealed evaluation.** They remain valid as a
+methodological record, and nothing in the clinical chain (stages 4–5) depends on
+that seal — the device and patient stages never had one, because their parameters
+come from public data and explicit assumptions.
 
 ## 5. What is validated, and what is not
 

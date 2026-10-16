@@ -84,14 +84,30 @@ node tools/verify_all.mjs
 README.md                  this file
 HANDOVER.md                what a clinical collaborator needs, and what is missing
 PROVENANCE.md              every constant, its value, its source, its verification status
-PK_BENCHMARK.md            the stage 1-3 benchmark specification
+PK_BENCHMARK.md            the stage 1-3 benchmark specification (retired as an evaluation)
+PK_LEDGER.md               the stages 1-3 decision record
+LEDGER.md files            stage decision records, one per stage directory
 
 tools/verify_all.mjs       one command that checks every result reproduces
 
 data/ evaluator/ model/ tools/   stage 1-3 PK benchmark
-dialyzer/                        stage 4 device model + real manufacturer data
-dialysis_session/                stage 5 patient model + PROTOCOL.md + estimator
+dialyzer/                        stage 4 device model + real manufacturer data + LEDGER.md
+dialysis_session/                stage 5 patient model + PROTOCOL.md + LEDGER.md + estimator
 ```
 
-Decision records for each stage (ledgers) are held outside this repository; see
-[`HANDOVER.md`](./HANDOVER.md) §4.
+## Decision records
+
+Every stage's design decisions, rationale, failures and assumptions are recorded in
+a ledger inside this package: [`PK_LEDGER.md`](./PK_LEDGER.md),
+[`dialyzer/LEDGER.md`](./dialyzer/LEDGER.md),
+[`dialysis_session/LEDGER.md`](./dialysis_session/LEDGER.md).
+
+They were originally held outside the repository under a seal, because the
+repository was also a benchmark against an autonomous agent that must not be able
+to read the answers. The evaluation phase is over, the seal is retired, and the
+records are now part of the deliverable.
+
+**Consequence, stated plainly:** publishing `PK_LEDGER.md` discloses the stages 1–3
+benchmark's true values and seed, so **those stages are retired as a sealed
+evaluation.** They remain a methodological record. Nothing clinical depends on that
+seal.
