@@ -29,11 +29,8 @@
 > | a bench / lab team | [`EXPERIMENT_HANDOVER.md`](./EXPERIMENT_HANDOVER.md) | the three testable specifications, what to measure, and what a failure would change |
 > | auditing the numbers | [`PROVENANCE.md`](./PROVENANCE.md) | every constant, its source, and whether it was verified, derived, assumed or never sourced |
 >
-> **How to check it yourself.** Pure Node.js, **no dependencies, no build step**:
->
-> ```sh
-> node tools/verify_all.mjs      # 33 checks, ~1 min, all should pass
-> ```
+> **How to check it yourself.** One command, no dependencies — see
+> [What you can do with this](#what-you-can-do-with-this) immediately below.
 >
 > **The point of the project, in one line.** Across ten stages the artificial
 > kidney's binding constraint moved from *disposable sorbent mass* to *electrical
@@ -44,15 +41,74 @@
 >
 > **License: MIT.** See [`LICENSE`](./LICENSE).
 
+## What you can do with this
 
-Five stages of work on creatinine clearance, haemodialysis and dialysis dosing.
-It began as a small parameter-fitting benchmark and ended as a **reviewable
-clinical study protocol with a validated analysis pipeline**.
+### 1. Verify it — no kidney knowledge required
 
-> **If you are a clinician or clinical researcher, this is a protocol, not a
-> clinical tool.** Start at [`dialysis_session/PROTOCOL.md`](./dialysis_session/PROTOCOL.md).
-> See [`HANDOVER.md`](./HANDOVER.md) for what you would need to run it and what is
-> still missing.
+```sh
+node tools/verify_all.mjs
+```
+
+**33 checks, about a minute, pure Node.js — no dependencies, no build step.** Every
+published number is re-derived from the code and compared against the value recorded
+in the documentation. A failure means either a result drifted or a documented number
+is wrong; both matter.
+
+**You do not need to understand haemodialysis to run this or to read the result.**
+
+### 2. Audit it — every constant carries its provenance
+
+[`PROVENANCE.md`](./PROVENANCE.md) tags **every constant in the project**:
+
+| tag | meaning |
+| --- | --- |
+| **✔ read** | retrieved from the primary source and read out of it |
+| **✔ derived** / **✔ repro** | produced by code here, or reproduced against independent data |
+| **~ via** | taken from a secondary transcription of a source I never opened |
+| **⚠ assume** | a modelling choice, not a sourced value — exposed and sensitivity-tested |
+| **✖ unverified** | stated but not checked, listed so it is not mistaken for verified |
+
+**If you think a number is wrong, change it and re-run the suite.** The tags tell you
+which numbers are load-bearing and which are placeholders. Two are flagged as weak:
+the **charcoal capacity is an assumption I invented**, and the **electrochemical
+energy figure was never sourced at all**.
+
+### 3. Continue it — three genuinely different routes
+
+**(a) Measure the two unknown quantities.** Both are bench work, not modelling.
+[`EXPERIMENT_HANDOVER.md`](./EXPERIMENT_HANDOVER.md) gives what to measure, the
+threshold, and what a failure would change:
+
+- **faradaic efficiency ≥ 40 %** for electrochemical urea removal
+- **activated-charcoal creatinine capacity ≥ 14.8 mg/g**
+
+**(b) Run the clinical protocol.** [`dialysis_session/PROTOCOL.md`](./dialysis_session/PROTOCOL.md)
+is a four-draw study that can settle whether the standard estimate of dialysis dose
+misses by a clinically meaningful amount. It needs a **PI and ethics approval** —
+[`HANDOVER.md`](./HANDOVER.md) lists exactly what is missing and who must supply it.
+
+**(c) Take the method elsewhere.** The transferable part is not the kidney model — it
+is the **constraint trace**: decompose a system by function, enumerate its finite
+resources, and find which one actually binds. It was applied four times here
+(*mass → capacity competition → patient variability → power*), and it applies to any
+system limited by a consumable.
+
+## What this package cannot do
+
+| it cannot… | because |
+| --- | --- |
+| **measure anything** | no hardware was ever built. Every result is computed from published data plus validated sub-models. The two quantities the whole conclusion rests on are **measurements**, and neither has been made. |
+| **obtain ethics approval** | that needs a named PI, a site and a committee. It is **authority, not knowledge** — and nothing in this repository substitutes for it. |
+| **be a device** | no regulatory clearance, no patient validation, no manufacturing. This is a model, a protocol and a set of specifications. |
+
+*For the model's own technical limitations — no selectivity, no reabsorption, no
+endocrine function — see [What this package is NOT](#what-this-package-is-not).*
+
+
+Ten stages of work on creatinine clearance, haemodialysis and dialysis dosing. It
+began as a small parameter-fitting benchmark and ended by tracing the artificial
+kidney's binding constraint from **sorbent mass** to **electrical power**, with a
+reviewable clinical study protocol and a validated analysis pipeline along the way.
 
 ---
 
