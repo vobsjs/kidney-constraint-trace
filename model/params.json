@@ -1,0 +1,6 @@
+{
+  "_comment": "MUTABLE CANDIDATE FILE. This is the only path the autoresearch boundary permits a candidate to change. Units: L/h for clearance, mL/min for creatinine clearance, L for volume.",
+  "clearanceAtCrcl92LPerH": 6.0,
+  "crclSlopePerMlMin": 0.003,
+  "volumeOfDistributionL": 40.0
+}

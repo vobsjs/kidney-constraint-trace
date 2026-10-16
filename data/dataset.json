@@ -1,0 +1,48 @@
+{
+  "name": "Gentamicin creatinine-clearance PK reference curve (Duong 2022 / Bos 2019)",
+  "kind": "literature-model-derived",
+  "statement": "Reference points are the deterministic predictions of the published Duong 2022 (Bos 2019 structural) one-compartment gentamicin population PK model, evaluated at the published cohort descriptors contained in this file. They are NOT raw patient observations; no residual noise has been added. The regression target is therefore exact parameter recovery, and agreement between optimised and published parameter values is the validity check.",
+  "regimen": {
+    "dose_mg": 400,
+    "dose_mg_per_kg": 5,
+    "body_weight_kg": 80,
+    "infusion_hours": 0.5,
+    "route": "intravenous constant-rate infusion"
+  },
+  "published_parameters": {
+    "clearanceAtCrcl92LPerH": 3.44,
+    "crclSlopePerMlMin": 0.00925,
+    "volumeOfDistributionL": 22.4,
+    "crclReferenceMlMin": 92
+  },
+  "published_residual_error": {
+    "proportional": 0.32,
+    "additive_mg_l": 0.056,
+    "note": "Recorded for provenance only; deliberately NOT applied to the reference curve."
+  },
+  "sampling": {
+    "crcl_strata_ml_min": [45, 60, 75, 92, 110, 130],
+    "times_h": [0.5, 1, 2, 4, 8, 12],
+    "n_points": 36
+  },
+  "units": { "time": "h", "dose": "mg", "concentration": "mg/L", "volume": "L", "clearance": "L/h" },
+  "sources": [
+    {
+      "role": "parameter values (Table S2, Bos row) and cohort descriptors (Table 1)",
+      "citation": "Duong A, Simard C, Williamson D, Marsot A. Model Re-Estimation: An Alternative for Poor Predictive Performance during External Evaluations? Example of Gentamicin in Critically Ill Patients. Pharmaceutics 2022;14(7):1426.",
+      "doi": "10.3390/pharmaceutics14071426"
+    },
+    {
+      "role": "structural model and residual error magnitudes (Table S1)",
+      "citation": "Bos JC, Prins JM, Misticio MC, Nunguiane G, Lang CN, Beirao JC, Mathot RAA, van Hest RM. Population pharmacokinetics with Monte Carlo simulations of gentamicin in a population of severely ill adult patients from sub-Saharan Africa. Antimicrob Agents Chemother 2019;63(4):e02328-18.",
+      "doi": "10.1128/AAC.02328-18"
+    }
+  ],
+  "generator": "tools/generate_reference_data.mjs",
+  "cohort": {
+    "n_subjects": 87,
+    "description": "Critically ill adult ICU patients (Quebec, Canada): HSCM n=39 and IUCPQ n=48.",
+    "crcl_ml_min_mean_sd": [92.2, 48.9],
+    "weight_kg_mean_sd": [80.0, 21.5]
+  }
+}
