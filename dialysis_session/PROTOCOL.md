@@ -76,11 +76,14 @@ required. Assay CV should be recorded; the design assumes 1–4%.
 1. **Primary estimand:** the difference
    `Δ = eKt/V(from the rate equation) − eKt/V(from the four draws)`,
    computed per session, analysed as a paired difference.
-2. **Reference estimate:** fit the two-pool model (`patient_dialyzer.mjs`) to the
-   four measured BUN values with the intercompartmental clearance Kc as the only
-   free parameter, holding V from anthropometry and the dialyzer clearance from
-   `dialyzer_model.mjs`; read off eKt/V. This is exactly the estimator validated in
-   stage 5, and it is already implemented and reproducible.
+2. **Reference estimate:** fit the two-pool model to the four measured BUN values
+   with the intercompartmental clearance Kc as the only free parameter, holding V
+   from anthropometry and the dialyzer clearance from `dialyzer_model.mjs`; read
+   off eKt/V. The estimator is `estimateFromSamples()` in
+   **[`estimator.mjs`](./estimator.mjs)**, which lives in this repository so a
+   collaborator can run the analysis without any Host-side material. It
+   self-tests (`node dialysis_session/estimator.mjs`) and reproduces the HEMO
+   manual's worked example for the comparator equation.
 3. **Primary test:** one-sample test of the mean Δ against 0, with a two-sided 95%
    CI. Report the fraction of sessions with |Δ| > 0.05.
 4. **H2 test:** regress Δ on the fitted Kc. Report the slope and its CI.

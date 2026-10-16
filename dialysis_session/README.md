@@ -170,6 +170,7 @@ patient model against individual outcomes. I hit it. What that means concretely:
 | Path | Role |
 | --- | --- |
 | `patient_dialyzer.mjs` | two-pool patient + coupled dialyzer, mass-based, exact periodic solve |
+| `estimator.mjs` | **the protocol's analysis estimator** -- recovers eKt/V from the four draws; self-tests |
 | `tools/validate_session_model.mjs` | checks 1–4 against the verified source values |
 | `tools/ultrafiltration_test.mjs` | tests whether ultrafiltration explains the rebound gap (it does not) |
 | `tools/study_design.mjs` | between-patient spread, within-session precision, sample size |
