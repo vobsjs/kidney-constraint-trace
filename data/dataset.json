@@ -1,7 +1,15 @@
 {
-  "name": "Gentamicin creatinine-clearance PK reference curve (Duong 2022 / Bos 2019), stochastic",
-  "kind": "literature-model-derived, with published residual error applied",
-  "statement": "Reference points are the predictions of the published Duong 2022 (Bos 2019 structural) one-compartment gentamicin population PK model at the published cohort descriptors, PLUS residual error drawn from that model's published combined additive-plus-proportional error model. They are NOT raw patient observations. Because the fit target now carries realistic residual noise, the optimum is a noisy-data estimate rather than exact parameter recovery.",
+  "name": "Gentamicin creatinine-clearance PK benchmark, active experiment loop (Duong 2022 / Bos 2019)",
+  "kind": "literature-model-derived, with published residual error applied, sampled sequentially",
+  "statement": "The chooser buys observations one at a time from a 6x6 grid of (CrCl, time) candidate points, with a budget of 12. Each observation is the prediction of the published Duong 2022 (Bos 2019 structural) one-compartment gentamicin population PK model at the published cohort descriptors, PLUS residual error drawn from that model's published combined additive-plus-proportional error model. They are NOT raw patient observations. The complete noise field is never exposed; only the observations actually bought appear in data/session_observations.csv.",
+  "protocol": {
+    "budget": 12,
+    "one_observation_per_query": true,
+    "grid": { "crcl_ml_min": [45, 60, 75, 92, 110, 130], "times_h": [0.5, 1, 2, 4, 8, 12] },
+    "pre_reading_full_dataset": "impossible: the complete noisy table does not exist in this repository",
+    "re_query": "returns the cached value and consumes no budget",
+    "chooser_may_use": "only the observations it has already bought"
+  },
   "noise_model": {
     "form": "y_obs = y_pred + SD * z,  SD = sqrt((prop * y_pred)^2 + add^2),  z ~ N(0,1)",
     "proportional": 0.32,
@@ -14,10 +22,10 @@
     "role": "External check ONLY. Never read by evaluator/judge.mjs, never used for fitting, and located outside the Git repository so it is outside the autoresearch worktree.",
     "location": "Host-side holdout directory; deliberately not recorded in this repository.",
     "sha256": "ef9b1c438267cc6ad66c96ef6f0a9b6f8c8b4c7b93b614f498ce78e610d25358",
-    "contains": "reference_points_noiseless.csv, generate_reference_data.mjs (seed + error model + true values), provenance.json, monte_carlo.mjs, external_check.mjs, compare_objectives.mjs, LEDGER.md",
+    "contains": "the noise-free curve, the seed and generator, the simulator, the sampling strategies, all comparison experiments, and the full ledger",
     "identified_by": "sha256 of the noise-free CSV, so the exact file can be audited without being disclosed"
   },
-  "this_file_sha256": "2ebaa6b9609820bcdf2622928d56a06819b67eb466029bd5ae9fc6303aa6d87c",
+  "this_file_sha256_note": "The noisy 36-point table that earlier stages committed here has been removed: leaving it in the worktree would let a chooser pre-read the whole dataset and turn the active loop back into a static fit. The simulator that owns it lives in the Host-side holdout.",
   "regimen": {
     "dose_mg": 400,
     "dose_mg_per_kg": 5,

@@ -44,17 +44,17 @@ function loadParameters() {
   return parsed
 }
 
-/** Read the frozen reference table (crcl, time, concentration). */
+/** Read the observations collected during the active session. */
 function loadReferencePoints() {
-  const path = join(repoRoot, 'data', 'reference_points.csv')
+  const path = join(repoRoot, 'data', 'session_observations.csv')
   let text
   try {
     text = readFileSync(path, 'utf8')
   } catch (error) {
-    fail(`could not read data/reference_points.csv: ${error.message}`)
+    fail(`could not read data/session_observations.csv: ${error.message}`)
   }
   const lines = text.split(/\r?\n/).filter((line) => line.trim() !== '')
-  if (lines.length < 2) fail('data/reference_points.csv has no data rows')
+  if (lines.length < 2) fail('data/session_observations.csv has no data rows')
   const header = lines[0].split(',').map((cell) => cell.trim())
   const index = {
     crcl: header.indexOf('crcl_ml_min'),
@@ -62,7 +62,7 @@ function loadReferencePoints() {
     concentration: header.indexOf('concentration_mg_l'),
   }
   for (const [key, position] of Object.entries(index)) {
-    if (position < 0) fail(`data/reference_points.csv is missing the ${key} column`)
+    if (position < 0) fail(`data/session_observations.csv is missing the ${key} column`)
   }
   return lines.slice(1).map((line) => {
     const cells = line.split(',')
@@ -70,7 +70,7 @@ function loadReferencePoints() {
     const timeH = Number(cells[index.time])
     const observedMgL = Number(cells[index.concentration])
     if (!Number.isFinite(crclMlMin) || !Number.isFinite(timeH) || !Number.isFinite(observedMgL)) {
-      fail(`malformed reference row: ${line}`)
+      fail(`malformed observation row: ${line}`)
     }
     return { crclMlMin, timeH, observedMgL }
   })

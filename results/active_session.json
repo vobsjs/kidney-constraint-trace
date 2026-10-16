@@ -1,0 +1,98 @@
+{
+  "benchmark": "kidney-constraint-trace active-experiment loop",
+  "chooser": "language model, deciding sequentially from the observations it has seen",
+  "seed": "held in the Host-side holdout provenance.json",
+  "budget": 12,
+  "observationsUsed": 12,
+  "finalEstimate": {
+    "clearanceAtCrcl92LPerH": 4.1279735398819986,
+    "crclSlopePerMlMin": 0.011322875660139467,
+    "volumeOfDistributionL": 26.39873738784337
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "crclMlMin": 92,
+      "timeH": 0.5,
+      "observedMgL": 15.8844940928111,
+      "rationale": "Initial design. End-of-infusion sample at the reference CrCl (92 mL/min) fixes the volume of distribution, because C(0.5h) is within ~4% of dose/V while the infusion is still rising. The two terminal samples at the extreme CrCl strata (45 and 130 mL/min) fix clearance at both ends of the widest available renal-function contrast, and a straight line through those two clearances gives both CL92 and the slope. Three points is the minimum that can separate V from the two clearance parameters."
+    },
+    {
+      "round": 2,
+      "crclMlMin": 45,
+      "timeH": 12,
+      "observedMgL": 8.405139088318819,
+      "rationale": "Initial design. End-of-infusion sample at the reference CrCl (92 mL/min) fixes the volume of distribution, because C(0.5h) is within ~4% of dose/V while the infusion is still rising. The two terminal samples at the extreme CrCl strata (45 and 130 mL/min) fix clearance at both ends of the widest available renal-function contrast, and a straight line through those two clearances gives both CL92 and the slope. Three points is the minimum that can separate V from the two clearance parameters."
+    },
+    {
+      "round": 3,
+      "crclMlMin": 130,
+      "timeH": 12,
+      "observedMgL": 1.2956045829987994,
+      "rationale": "Initial design. End-of-infusion sample at the reference CrCl (92 mL/min) fixes the volume of distribution, because C(0.5h) is within ~4% of dose/V while the infusion is still rising. The two terminal samples at the extreme CrCl strata (45 and 130 mL/min) fix clearance at both ends of the widest available renal-function contrast, and a straight line through those two clearances gives both CL92 and the slope. Three points is the minimum that can separate V from the two clearance parameters."
+    },
+    {
+      "round": 4,
+      "crclMlMin": 92,
+      "timeH": 12,
+      "observedMgL": 1.6033442565656189,
+      "rationale": "CL92 is currently obtained by extrapolating a line through the clearances measured at CrCl 45 and 130 back to CrCl 92, so it inherits the error of both endpoints. Measuring the terminal concentration AT the reference stratum removes that extrapolation and decouples CL92 from the slope, which is the parameter the two extreme points are really informing."
+    },
+    {
+      "round": 5,
+      "crclMlMin": 45,
+      "timeH": 0.5,
+      "observedMgL": 11.65740262143412,
+      "rationale": "V is still +/-33%, which is essentially the residual error of ONE observation (32% CV): the volume is informed only by the single end-of-infusion sample, so its uncertainty is the noise on that point and cannot fall without averaging more peaks. These two add peaks at the extreme strata. Peak height is within a few percent of dose/V at every CrCl, so their main value is variance reduction on V, with a small secondary effect separating V from clearance."
+    },
+    {
+      "round": 6,
+      "crclMlMin": 130,
+      "timeH": 0.5,
+      "observedMgL": 21.316497926022663,
+      "rationale": "V is still +/-33%, which is essentially the residual error of ONE observation (32% CV): the volume is informed only by the single end-of-infusion sample, so its uncertainty is the noise on that point and cannot fall without averaging more peaks. These two add peaks at the extreme strata. Peak height is within a few percent of dose/V at every CrCl, so their main value is variance reduction on V, with a small secondary effect separating V from clearance."
+    },
+    {
+      "round": 7,
+      "crclMlMin": 60,
+      "timeH": 12,
+      "observedMgL": 5.387132937758259,
+      "rationale": "The peak samples came back scattered (11.7, 15.9, 21.3) around a true value that should be nearly constant near 17 mg/L, so their apparent trend with CrCl is noise, not signal. The slope is therefore still resting on three terminal points whose residuals happen to run +30%, -45%, -17%, which is what pushes the slope estimate 26% high. Terminal samples give the largest between-stratum separation, so filling in the intermediate strata at t=12 averages that noise where the slope signal is strongest."
+    },
+    {
+      "round": 8,
+      "crclMlMin": 110,
+      "timeH": 12,
+      "observedMgL": 2.108218949539597,
+      "rationale": "The peak samples came back scattered (11.7, 15.9, 21.3) around a true value that should be nearly constant near 17 mg/L, so their apparent trend with CrCl is noise, not signal. The slope is therefore still resting on three terminal points whose residuals happen to run +30%, -45%, -17%, which is what pushes the slope estimate 26% high. Terminal samples give the largest between-stratum separation, so filling in the intermediate strata at t=12 averages that noise where the slope signal is strongest."
+    },
+    {
+      "round": 9,
+      "crclMlMin": 45,
+      "timeH": 8,
+      "observedMgL": 4.293677090827503,
+      "rationale": "The t=12 profile is now five strata deep, but the CrCl 92 point sits 45% below its expected value and single-handedly tilts the apparent decay-vs-CrCl relation, keeping the slope 24% high. More t=12 samples would only average within that one window, so instead I open an INDEPENDENT window at t=8. If the steep relation is real it must reappear at t=8; if it is an artefact of one bad point, the t=8 pair will contradict it. Sampling the extremes keeps the between-stratum contrast maximal."
+    },
+    {
+      "round": 10,
+      "crclMlMin": 130,
+      "timeH": 8,
+      "observedMgL": 2.592018879539478,
+      "rationale": "The t=12 profile is now five strata deep, but the CrCl 92 point sits 45% below its expected value and single-handedly tilts the apparent decay-vs-CrCl relation, keeping the slope 24% high. More t=12 samples would only average within that one window, so instead I open an INDEPENDENT window at t=8. If the steep relation is real it must reappear at t=8; if it is an artefact of one bad point, the t=8 pair will contradict it. Sampling the extremes keeps the between-stratum contrast maximal."
+    },
+    {
+      "round": 11,
+      "crclMlMin": 45,
+      "timeH": 4,
+      "observedMgL": 11.57173430617578,
+      "rationale": "Every point so far is at t=0.5, t=8 or t=12, so the model is extrapolating the decay across a completely unobserved 7.5-hour gap between the peak and the first terminal sample. Clearance and volume trade off along exactly that gap, which is why V still sits at +/-18% no matter how many peaks I average. These two mid-interval samples at the extreme strata both pin the decay shape where it is currently unconstrained and open a third independent CrCl-contrast window for the slope, at t=4 where the strata are already ~36% apart."
+    },
+    {
+      "round": 12,
+      "crclMlMin": 130,
+      "timeH": 4,
+      "observedMgL": 6.181821564087143,
+      "rationale": "Every point so far is at t=0.5, t=8 or t=12, so the model is extrapolating the decay across a completely unobserved 7.5-hour gap between the peak and the first terminal sample. Clearance and volume trade off along exactly that gap, which is why V still sits at +/-18% no matter how many peaks I average. These two mid-interval samples at the extreme strata both pin the decay shape where it is currently unconstrained and open a third independent CrCl-contrast window for the slope, at t=4 where the strata are already ~36% apart."
+    }
+  ]
+}

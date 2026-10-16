@@ -5,6 +5,14 @@ cannot invent an evaluator command, because that would let it choose its own
 score. The registry lives in Host-owned profile configuration, so it has to be
 created outside the agent loop.
 
+> **Note on the active-loop stage.** The evaluator now scores `model/params.json`
+> against `data/session_observations.csv` — the 12 observations the chooser
+> actually bought. `dsh-autoresearch` cannot drive an interactive sequential loop
+> by itself: it proposes parameter vectors and re-scores them, it does not ask for
+> one new observation at a time. The active loop is therefore driven by the
+> Host-side simulator in the sealed holdout, and this registration remains what it
+> was — the static-scoring path, now pointed at the session's data.
+
 ## Status: REGISTRATION LIVE — RUN BLOCKED BY A PLUGIN PLATFORM LIMIT
 
 The row below was merged into `$DSH_HOME/profiles/desktop/cordis.patch.yml` and was
@@ -67,7 +75,7 @@ relying on partial-merge behaviour.
         dataset:
           kind: local
           files:
-            - data/reference_points.csv
+            - data/session_observations.csv
             - data/dataset.json
 ```
 
@@ -96,11 +104,11 @@ From this repository — see the platform blocker above; this cannot run on win3
 
 ```json
 {
-  "objective": "Minimise the Host-measured RMSE (mg/L) between the one-compartment gentamicin creatinine-clearance PK model and the frozen noisy literature-derived reference points, by tuning only the parameters in model/params.json.",
-  "run_tag": "gentamicin-crcl-fit-2",
+  "objective": "Minimise the Host-measured RMSE (mg/L) between the one-compartment gentamicin creatinine-clearance PK model and the 12 observations collected in the active session, by tuning only the parameters in model/params.json.",
+  "run_tag": "gentamicin-crcl-fit-3",
   "evaluator_id": "gentamicin-crcl-fit",
   "mutable_globs": ["model/params.json"],
-  "target": 3.2,
+  "target": 2.4,
   "max_experiments": 20,
   "timeout_ms": 120000,
   "constraints": [
@@ -111,23 +119,37 @@ From this repository — see the platform blocker above; this cannot run on win3
 }
 ```
 
-**`target` is 3.2 mg/L, not a near-zero epsilon.** The reference curve now carries
-the publication's residual error (proportional 0.32 + additive 0.056 mg/L), so the
-achievable floor is the noise, not numerical zero: the expected RMSE at the true
-parameters is **3.962908 mg/L**, and the multi-start optimum reaches **3.392378**.
-A target near zero would be unreachable.
+**`target` is 2.4 mg/L.** The observations carry the publication's residual error
+(proportional 0.32 + additive 0.056 mg/L), so the achievable floor is the noise,
+not numerical zero. On the reference session's 12 observations the shipped
+baseline scores 4.661 mg/L and the unweighted multi-start optimum reaches
+2.545 mg/L; the submitted estimate scores 2.659 mg/L, because it was produced by
+the maximum-likelihood estimator rather than by minimising this RMSE. See below.
 
 ## 3. Reference values
 
+Session-scoped, on the 12 observations in `data/session_observations.csv`:
+
 | | RMSE (mg/L) |
 | --- | --- |
-| Shipped baseline | 6.434202 |
-| Optimum (`tools/reference_optimizer.mjs`) | 3.392378 |
-| Expected RMSE at the true parameters (noise floor) | 3.962908 |
+| Shipped baseline `[6.0, 0.003, 40.0]` | 4.661301 |
+| Unweighted multi-start optimum | 2.544927 |
+| Submitted estimate (`model/params.json`) | 2.658523 |
 
-Six widely separated restarts converge to the same optimum (worst − best RMSE
-= 9.8e-15). Parameter recovery, the estimator's sampling distribution over 200
-independent seeds, and the external check against the noise-free curve are all
-recorded in the Host-side `LEDGER.md` — they are kept out of this repository
-because reporting them here would disclose the true parameter values.
+Six widely separated restarts converge to the same unweighted optimum
+(worst − best RMSE = 5.3e-15).
+
+**Why the submitted estimate is not the RMSE optimum.** The Host-side active loop
+estimates by maximum likelihood for the published error model, which is a
+*different objective* from this unweighted RMSE. Over 200 seeds the ML estimator
+is decisively better in the active setting — mean absolute relative error 12.6 %
+versus 65.9 % for unweighted LS on the same adaptive designs — and the static
+stage's ledger records the full estimator comparison. A small residual RMSE gap
+against the unweighted optimum is the expected cost of that choice.
+
+Parameter recovery, the estimator's sampling distribution, the strategy
+comparison and the external check are recorded in the Host-side `LEDGER.md`; they
+are kept out of this repository because reporting them here would disclose the
+true parameter values.
+
 

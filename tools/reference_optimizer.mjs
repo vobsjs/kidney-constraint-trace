@@ -2,10 +2,11 @@
 /**
  * Reference optimizer for the gentamicin creatinine-clearance PK benchmark.
  *
- * Fits the NOISY reference curve. This file deliberately has no knowledge of the
- * true parameter values: it reads only data/reference_points.csv, and it is the
- * same routine the Host-side Monte Carlo study reuses, so the uncertainty it
- * reports is the uncertainty of the exact procedure used here.
+ * Fits the observations collected in the active session. This file deliberately
+ * has no knowledge of the true parameter values: it reads only
+ * data/session_observations.csv, and it is the same routine the Host-side Monte
+ * Carlo study reuses, so the uncertainty it reports is the uncertainty of the
+ * exact procedure used here.
  *
  * The true values and the noise-free curve live in the Host-side holdout
  * directory (outside this repository) and are used only by the external check.
@@ -71,7 +72,7 @@ export function parseReferenceCsv(text) {
 }
 
 export function loadReferencePoints(root = repoRoot) {
-  return parseReferenceCsv(readFileSync(join(root, 'data', 'reference_points.csv'), 'utf8'))
+  return parseReferenceCsv(readFileSync(join(root, 'data', 'session_observations.csv'), 'utf8'))
 }
 
 export function loadRegimen(root = repoRoot) {

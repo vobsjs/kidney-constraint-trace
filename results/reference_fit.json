@@ -1,7 +1,7 @@
 {
   "generatedBy": "tools/reference_optimizer.mjs",
   "note": "Fit of the NOISY reference curve. True values are not accessible from this repository; uncertainty and the external check are Host-side.",
-  "referencePoints": 36,
+  "referencePoints": 12,
   "metric": "rmse_mg_l",
   "baseline": {
     "parameters": [
@@ -9,41 +9,41 @@
       0.003,
       40
     ],
-    "rmseMgL": 6.434202274931359
+    "rmseMgL": 4.661301430317046
   },
   "optimised": {
-    "rmseMgL": 3.3923776228753297,
+    "rmseMgL": 2.54492726626049,
     "parameters": {
-      "clearanceAtCrcl92LPerH": 3.581546484436042,
-      "crclSlopePerMlMin": 0.004452601785449996,
-      "volumeOfDistributionL": 21.875649154530596
+      "clearanceAtCrcl92LPerH": 4.054940480406215,
+      "crclSlopePerMlMin": 0.009113202005991895,
+      "volumeOfDistributionL": 24.118180731352318
     }
   },
   "multiStart": [
-    {
-      "start": [
-        10,
-        0.02,
-        60
-      ],
-      "rmseMgL": 3.3923776228753297,
-      "parameters": {
-        "clearanceAtCrcl92LPerH": 3.581546484436042,
-        "crclSlopePerMlMin": 0.004452601785449996,
-        "volumeOfDistributionL": 21.875649154530596
-      }
-    },
     {
       "start": [
         3,
         0.005,
         25
       ],
-      "rmseMgL": 3.392377622875331,
+      "rmseMgL": 2.54492726626049,
       "parameters": {
-        "clearanceAtCrcl92LPerH": 3.5815464952189497,
-        "crclSlopePerMlMin": 0.0044526023293301464,
-        "volumeOfDistributionL": 21.87564911152831
+        "clearanceAtCrcl92LPerH": 4.054940480406215,
+        "crclSlopePerMlMin": 0.009113202005991895,
+        "volumeOfDistributionL": 24.118180731352318
+      }
+    },
+    {
+      "start": [
+        10,
+        0.02,
+        60
+      ],
+      "rmseMgL": 2.5449272662604905,
+      "parameters": {
+        "clearanceAtCrcl92LPerH": 4.054940447668353,
+        "crclSlopePerMlMin": 0.009113202021065329,
+        "volumeOfDistributionL": 24.118180986184
       }
     },
     {
@@ -52,24 +52,11 @@
         0.0005,
         5
       ],
-      "rmseMgL": 3.392377622875331,
+      "rmseMgL": 2.5449272662604905,
       "parameters": {
-        "clearanceAtCrcl92LPerH": 3.581546426184125,
-        "crclSlopePerMlMin": 0.004452601650766294,
-        "volumeOfDistributionL": 21.875648983485135
-      }
-    },
-    {
-      "start": [
-        2,
-        0.03,
-        15
-      ],
-      "rmseMgL": 3.3923776228753315,
-      "parameters": {
-        "clearanceAtCrcl92LPerH": 3.5815464202160077,
-        "crclSlopePerMlMin": 0.0044526016792547606,
-        "volumeOfDistributionL": 21.875649328504174
+        "clearanceAtCrcl92LPerH": 4.0549404037103285,
+        "crclSlopePerMlMin": 0.0091132018138148,
+        "volumeOfDistributionL": 24.11818076594549
       }
     },
     {
@@ -78,11 +65,11 @@
         0.001,
         10
       ],
-      "rmseMgL": 3.3923776228753346,
+      "rmseMgL": 2.544927266260491,
       "parameters": {
-        "clearanceAtCrcl92LPerH": 3.581546566454525,
-        "crclSlopePerMlMin": 0.004452601702272735,
-        "volumeOfDistributionL": 21.875648722075297
+        "clearanceAtCrcl92LPerH": 4.054940397130995,
+        "crclSlopePerMlMin": 0.009113201717638015,
+        "volumeOfDistributionL": 24.118180922671694
       }
     },
     {
@@ -91,14 +78,27 @@
         0.003,
         40
       ],
-      "rmseMgL": 3.3923776228753395,
+      "rmseMgL": 2.5449272662604914,
       "parameters": {
-        "clearanceAtCrcl92LPerH": 3.5815463309487807,
-        "crclSlopePerMlMin": 0.004452601709897806,
-        "volumeOfDistributionL": 21.8756493444564
+        "clearanceAtCrcl92LPerH": 4.0549404565506775,
+        "crclSlopePerMlMin": 0.009113201738169067,
+        "volumeOfDistributionL": 24.118180698091
+      }
+    },
+    {
+      "start": [
+        2,
+        0.03,
+        15
+      ],
+      "rmseMgL": 2.5449272662604954,
+      "parameters": {
+        "clearanceAtCrcl92LPerH": 4.0549404082366705,
+        "crclSlopePerMlMin": 0.009113202086122946,
+        "volumeOfDistributionL": 24.11818058132709
       }
     }
   ],
-  "worstMinusBestRmse": 9.769962616701378e-15,
+  "worstMinusBestRmse": 5.329070518200751e-15,
   "referenceCsvSha256": null
 }
