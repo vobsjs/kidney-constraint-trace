@@ -174,6 +174,34 @@ check({
   extract: grab(/required clearance\s+([\d.]+) mL\/min/),
 })
 check({
+  name: 'stage 9: renal power budget is reproduced from oxygen consumption',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_regenerable.mjs'],
+  expect: '7.1 W',
+  extract: grab(/renal power budget\s+[\d.]+ - [\d.]+ W\s+\(mid ([\d.]+ W)\)/),
+})
+check({
+  name: 'stage 9: energy specification derived without assuming electrochemistry',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_regenerable.mjs'],
+  expect: '11.4',
+  extract: grab(/must achieve <= ([\d.]+) kWh per kg/),
+})
+check({
+  name: 'stage 9: battery mass at the specification',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_regenerable.mjs'],
+  expect: '0.68 kg',
+  extract: grab(/so the battery mass is ([\d.]+ kg) at the specification/),
+})
+check({
+  name: 'stage 9: cartridge mass is plausible against a real wearable device',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_regenerable.mjs'],
+  expect: '33%',
+  extract: grab(/-> ([\d]+%) of the whole device budget/),
+})
+check({
   name: 'stage 8: charcoal requirement is derivable without assuming a capacity',
   command: process.execPath,
   args: ['artificial_kidney/tools/run_variability.mjs'],

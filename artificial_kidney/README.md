@@ -21,11 +21,17 @@ a week.
 | Module | Function | Renal analogue | Status |
 | --- | --- | --- | --- |
 | **Filtration** | move solute out of blood across a membrane | glomerular filtration | **validated** (stage 4, reused unchanged) |
-| **Regeneration** | strip solute from the filtrate and **return the fluid** | tubular reabsorption | **new in this stage** |
+| **Regeneration** | strip solute from the filtrate and **return the fluid** | **NONE — see §3d** | **new in this stage** |
 | **Compartment** | distribute and generate solute | body fluid compartments | **validated** (stage 5, reused unchanged) |
 
 Only regeneration is new. The other two are imported, not rewritten, so the
 composition is a genuine composition rather than a reimplementation.
+
+> **Correction (stage 9).** This table originally listed "tubular reabsorption" as
+> regeneration's renal analogue. **That was a false analogy.** A tubule *reclaims*
+> glucose, amino acids, bicarbonate and water through molecular recognition; a
+> sorbent or an electrode *destroys* urea. They are opposite functions, and
+> dialysate regeneration has **no renal counterpart**. See §3d.
 
 ## 3. The regeneration module, and its grounding
 
@@ -186,6 +192,85 @@ capacity.** The median does not depend on it; the p95 and the mean do.
 This is a modelling choice. Scaling creatinine with urea would have been wrong in
 the opposite direction.
 
+
+## 3d. Stage 9 — regenerable sorbent: from a mass limit to a power limit
+
+### A correction to stage 6, first
+
+Stage 6 described the regeneration module as **"the tubular reabsorption
+analogue."** **That was a false analogy.** A tubule *reclaims* glucose, amino
+acids, bicarbonate and water through molecular recognition. A sorbent — and an
+electrode — *destroy* urea. They are opposite functions. **Dialysate regeneration
+has no renal counterpart**, and is now labelled as such.
+
+### What changes, and what does not
+
+| | |
+| --- | --- |
+| **Kind of limit** | **mass → power** |
+| **Clinical consequence** | no cartridge changes; a continuous power budget |
+| **Failure mode** | was "consumable runs out"; now "budget exceeded" |
+| selectivity | **unchanged** — no molecular recognition |
+| reabsorption | **unchanged** — still destroys, never reclaims |
+| endocrine / metabolic | **unchanged** — absent |
+| regulation | **unchanged** — still a sink, not a setpoint controller |
+
+**Why "mass → power" is a real structural gain rather than a lateral swap:** a
+kidney has **no cartridge**, but it **cannot exceed a metabolic budget**. Moving the
+limit onto power moves it onto the resource biology is *also* limited by. It is not
+biology — the chemistry stays abiotic — but it is the right *kind* of limit.
+
+### The anchor, and the specification
+
+| | |
+| --- | --- |
+| resting whole-body VO₂ | 250 mL/min |
+| renal share | 7–10% |
+| oxidative energy | 20.1 kJ per litre O₂ |
+| **renal power budget** | **5.9 – 8.4 W (mid 7.1 W)** |
+
+No sourceable energy-per-gram for electrochemical urea oxidation was found (the NSF
+PAR copy was unreachable; one open-access PDF was CID-glyph encoded). **So none is
+claimed** — the question is inverted instead:
+
+> **Electrochemical urea removal must achieve ≤ 11.4 kWh per kg of urea** to fit
+> inside the budget a kidney itself operates under (~7 W).
+
+**A requirement, not a measurement.**
+
+### Sweep — the energy figure is swept, never claimed
+
+| energy (kWh/kg) | power (W) | battery (kg) | fits kidney budget? |
+| --- | --- | --- | --- |
+| 5 | 3.1 | 0.30 | **yes** |
+| 10 | 6.2 | 0.60 | **yes** |
+| 16 | 10.0 | 0.96 | no |
+| 20 | 12.5 | 1.20 | no |
+| 50 | 31.2 | 2.99 | no |
+
+### The two constraints side by side, over 30 days
+
+| | disposable | regenerable |
+| --- | --- | --- |
+| carried mass | 1.66 kg | 0.68 kg |
+| **resupplied over 30 d** | **19.6 kg** | **0.0 kg** |
+| cartridge changes | 11.8 | 0 |
+| continuous power | — | 7.1 W |
+| consignment | replaced | recharged |
+
+**The structural difference is not mass — the two are comparable. It is that sorbent
+mass is *consumed* and must be resupplied, while battery mass is *carried* and
+recharged.** The resupply column is the one that changes kind.
+
+### Mass sanity check against a device that reached clinical trials
+
+Gura's Wearable Artificial Kidney — **<5 kg, battery-driven, ~400 mL water,
+sorbent-based regeneration, NCT02280005**. Our modelled cartridge alone is
+**1.66 kg, 33%** of that budget, leaving 3.3 kg for pump, dialyzer, battery, water
+and housing. A plausible total — which is the only claim made, since the WAK
+carried a *disposable* sorbent. This checks the **mass scale**, not the regenerable
+path.
+
 ## 4. Results
 
 `tools/run_analysis.mjs`:
@@ -287,5 +372,7 @@ deepening the dialyzer:
 | `system.mjs` | the closed loop, the regeneration simulation, and the modality comparison |
 | `capacity_competition.mjs` | stage 7: the parallel capacity pools and their lifetimes |
 | `patient_variability.mjs` | stage 8: the charcoal assumption and the population distribution |
+| `regenerable.mjs` | stage 9: the power-limit model and the constraint comparison |
 | `tools/run_analysis.mjs` | checks 1–5 |
 | `tools/run_variability.mjs` | checks 6–7 |
+| `tools/run_regenerable.mjs` | checks 8–11 |
