@@ -19,6 +19,9 @@ clinical study protocol with a validated analysis pipeline**.
 | 4 | [`dialyzer/`](./dialyzer/README.md) | A haemodialyzer as a counter-current mass-transfer device; KoA identified from bench clearance measurements | The device itself. Validated against 120 real EN ISO 8637-1:2020 measurements. |
 | 5 | [`dialysis_session/`](./dialysis_session/README.md) | That device coupled to a two-pool human urea model; post-dialysis rebound and the sampling design | The clinical quantity: **equilibrated Kt/V**, the dose actually delivered. |
 | 6 | [`artificial_kidney/`](./artificial_kidney/README.md) | The system, decomposed by function: filtration + regeneration + compartment, closing the dialysate loop | **Continuity** — the functional difference between dialysis and a kidney. |
+| 7 | [`artificial_kidney/`](./artificial_kidney/LEDGER_STAGE7.md) | The cartridge as **parallel capacity pools**; urea turns out not to be the binding one | Cartridge life and consumable demand become real quantities. |
+| 8 | [`artificial_kidney/`](./artificial_kidney/LEDGER_STAGE8.md) | The charcoal assumption, and **patient variability** as a distribution rather than a range | A device sized for the median fails for 25% of patients. |
+| 9 | [`artificial_kidney/`](./artificial_kidney/LEDGER_STAGE9.md) | **Regenerable sorbent**: the limit changes kind, from mass to power | The right *kind* of limit — the one biology also operates under. |
 
 **Stages 1–3 are not needed to understand or run the study.** They are kept
 because the estimator and design machinery were developed there and are reused
@@ -29,6 +32,7 @@ unchanged, and because their negative results are part of the record.
 | You want to… | Go to |
 | --- | --- |
 | Review or run the clinical study | [`dialysis_session/PROTOCOL.md`](./dialysis_session/PROTOCOL.md), then [`HANDOVER.md`](./HANDOVER.md) |
+| Take the artificial-kidney work to a bench | **[`EXPERIMENT_HANDOVER.md`](./EXPERIMENT_HANDOVER.md)** |
 | Check where every number comes from | [`PROVENANCE.md`](./PROVENANCE.md) |
 | Know what is validated vs assumed vs unverified | [`PROVENANCE.md`](./PROVENANCE.md) §4 |
 | Reproduce every result in the repository | `node tools/verify_all.mjs` |
@@ -84,7 +88,8 @@ node tools/verify_all.mjs
 
 ```
 README.md                  this file
-HANDOVER.md                what a clinical collaborator needs, and what is missing
+HANDOVER.md                what a CLINICAL collaborator needs, and what is missing
+EXPERIMENT_HANDOVER.md     what a BENCH team needs: the three testable specifications
 PROVENANCE.md              every constant, its value, its source, its verification status
 PK_BENCHMARK.md            the stage 1-3 benchmark specification (retired as an evaluation)
 PK_LEDGER.md               the stages 1-3 decision record

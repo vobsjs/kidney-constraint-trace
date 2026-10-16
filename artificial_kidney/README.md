@@ -1,4 +1,17 @@
-# Stage 6 — from a device to a functional artificial kidney
+# Stages 6–9 — from a device to a functional artificial kidney
+
+> **This directory covers four stages**, not one. Stage 6 built the architecture;
+> stages 7, 8 and 9 each corrected or advanced it — including two corrections to
+> stage 6 itself. Sections §3b, §3c and §3d below are those stages.
+>
+> | Ledger | Stage |
+> | --- | --- |
+> | [`LEDGER.md`](./LEDGER.md) | 6 — the module decomposition |
+> | [`LEDGER_STAGE7.md`](./LEDGER_STAGE7.md) | 7 — capacity competition; corrects a stage-6 error |
+> | [`LEDGER_STAGE8.md`](./LEDGER_STAGE8.md) | 8 — the charcoal assumption and patient variability |
+> | [`LEDGER_STAGE9.md`](./LEDGER_STAGE9.md) | 9 — mass → power; corrects stage 6's false analogy |
+>
+> For bench work, start at [`../EXPERIMENT_HANDOVER.md`](../EXPERIMENT_HANDOVER.md).
 
 Stages 4–5 modelled **one device**: a dialyzer, then that dialyzer coupled to a
 patient. This stage models the **system**, decomposed the way a kidney is

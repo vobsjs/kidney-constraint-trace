@@ -139,9 +139,65 @@ example (`spKt/V 1.2 over 3 h → gap 0.21`). That check runs in
 - the Duong 2022 and Bos 2019 papers themselves (their parameter values here come
   from a curated secondary transcription).
 
+**Added in stages 6–9, and weaker than the above**
+
+- the sorbent pool capacities: **single-source**, one published characterisation,
+  never replicated (§5);
+- the charcoal creatinine capacity: **an assumption I invented**, because no
+  citable figure exists in the accessible literature (§6) — this is the single
+  weakest number in the package;
+- the electrochemical energy requirement: **not sourced at all**, stated only as a
+  derived requirement of ≤ 11.4 kWh/kg (§7);
+- **no hardware has ever been built or measured by this project.**
+
 **Never done**
 
 - the model has never been confronted with a real patient's measured BUN
   trajectory;
 - no real dialyzer has been measured by us;
 - nothing here has been reviewed by a clinician or an ethics committee.
+
+## 5. Stages 6–7 — the sorbent cartridge
+
+Source: a published REDY sorbent-cartridge characterisation (UNSW). Values are as
+read from that document; its OCR was imperfect in places, noted where it mattered.
+
+| Constant | Value | Status |
+| --- | --- | --- |
+| D3150 urea capacity | **43.7 g** computed; table gives min **42.9**, avg **53.6** | **✔ read** — the computed figure agrees with the table |
+| Urea → ammonium stoichiometry | **2 NH4+ per urea** | **✔ derived**, and it resolves the arithmetic: 43.7 g = 727.6 mmol = 1455 mEq = 145.9 mEq × 10 |
+| ZP ammonium capacity | 1.42–1.66 mEq/g; **1.47 measured** | **✔ read** |
+| ZP total cation capacity | 3.80 ± 1.14 mEq/g (Na 2.80 ± 0.87, H 1.00 ± 0.34) | **✔ read** — but the source states it is *not* applicable under dialysis conditions |
+| ZP operative capacity | **1.90 mEq/g**, derived from 188.3 mEq used of a 99.1 g bed | **✔ derived** |
+| HZO/alumina anion complement | **80–113 mEq** | **✔ read** — published as a range, which is why lifetimes are ranges |
+| Measured ammonium / other cations | 145.9 / 42.4 mEq (1/10 scale) | **✔ read** |
+| Urea carbon → bicarbonate | **27%** | **✔ read** |
+| Sulphate net uptake | **0** after 90 min (displaced by bicarbonate) | **✔ read** — excluded from the load |
+| REDY recirculating loop volume | **5.5 L** | **✔ read** |
+| Urea generation | **15.0 g/day** | **✔ read** (HEMO, verified in stage 5) |
+
+**Caution:** every value here rests on **one** published characterisation, never
+independently replicated. Treat the pool *structure* as well-grounded and the exact
+capacities as single-source.
+
+## 6. Stage 8 — patient variability and the charcoal assumption
+
+| Constant | Value | Status |
+| --- | --- | --- |
+| Urea generation, between patients | **4.85 ± 1.95 mg N/min** (CV 40%) | **✔ read** — HEMO. The only *measured population spread* in the package |
+| Charcoal mass | 249 g | **⚠ assume** — the source gives 24.9 g at 1/10 scale; **the ×10 scaling is mine** |
+| Creatinine generation | 1400 mg/day | **⚠ assume** — 20 mg/kg/day × 70 kg; no source |
+| Charcoal creatinine capacity | 10–50 mg/g | **⚠ assume** — **no citable figure exists in the accessible literature.** The package's weakest number |
+| Charcoal requirement (derived) | **≥ 14.8 mg/g** to outlast 2.64 days | **✔ derived** — needs no assumption |
+
+## 7. Stage 9 — the power limit
+
+| Constant | Value | Status |
+| --- | --- | --- |
+| Resting whole-body VO₂ | 250 mL/min | **✔ standard physiology** |
+| Renal share of VO₂ | 7–10% | **✔ standard physiology** |
+| Oxidative energy | 20.1 kJ per litre O₂ | **✔ standard physiology** |
+| **Renal power budget** | **5.9–8.4 W (mid 7.1 W)** | **✔ derived** |
+| Li-ion pack energy density | 250 Wh/kg | **✔ typical published value** |
+| Wearable reference device | <5 kg, 400 mL water, sorbent, NCT02280005 | **✔ read** — Gura's WAK, reached clinical trials |
+| Electrochemical energy per kg urea | **NOT SOURCED** | **✖ none claimed** — the NSF PAR copy was unreachable and one open-access PDF was CID-glyph encoded. Stated as a *requirement* (≤ 11.4 kWh/kg), never a measurement |
