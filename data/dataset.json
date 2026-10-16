@@ -1,24 +1,29 @@
 {
-  "name": "Gentamicin creatinine-clearance PK reference curve (Duong 2022 / Bos 2019)",
-  "kind": "literature-model-derived",
-  "statement": "Reference points are the deterministic predictions of the published Duong 2022 (Bos 2019 structural) one-compartment gentamicin population PK model, evaluated at the published cohort descriptors contained in this file. They are NOT raw patient observations; no residual noise has been added. The regression target is therefore exact parameter recovery, and agreement between optimised and published parameter values is the validity check.",
+  "name": "Gentamicin creatinine-clearance PK reference curve (Duong 2022 / Bos 2019), stochastic",
+  "kind": "literature-model-derived, with published residual error applied",
+  "statement": "Reference points are the predictions of the published Duong 2022 (Bos 2019 structural) one-compartment gentamicin population PK model at the published cohort descriptors, PLUS residual error drawn from that model's published combined additive-plus-proportional error model. They are NOT raw patient observations. Because the fit target now carries realistic residual noise, the optimum is a noisy-data estimate rather than exact parameter recovery.",
+  "noise_model": {
+    "form": "y_obs = y_pred + SD * z,  SD = sqrt((prop * y_pred)^2 + add^2),  z ~ N(0,1)",
+    "proportional": 0.32,
+    "additive_mg_l": 0.056,
+    "citation": "Bos JC et al. Antimicrob Agents Chemother 2019;63(4):e02328-18, Table S1 (Proportional 32%, Additive 0.056 mg/L), carried forward by Duong A et al. Pharmaceutics 2022;14(7):1426 for the Bos structural model.",
+    "seeded": true,
+    "seed_location": "Host-side holdout provenance.json. The seed is deliberately NOT stored in this repository: with the seed and this error model the noise-free curve could be reconstructed exactly, which would defeat the benchmark."
+  },
+  "noise_free_holdout": {
+    "role": "External check ONLY. Never read by evaluator/judge.mjs, never used for fitting, and located outside the Git repository so it is outside the autoresearch worktree.",
+    "location": "Host-side holdout directory; deliberately not recorded in this repository.",
+    "sha256": "ef9b1c438267cc6ad66c96ef6f0a9b6f8c8b4c7b93b614f498ce78e610d25358",
+    "contains": "reference_points_noiseless.csv, generate_reference_data.mjs (seed + error model + true values), provenance.json, monte_carlo.mjs, external_check.mjs, compare_objectives.mjs, LEDGER.md",
+    "identified_by": "sha256 of the noise-free CSV, so the exact file can be audited without being disclosed"
+  },
+  "this_file_sha256": "2ebaa6b9609820bcdf2622928d56a06819b67eb466029bd5ae9fc6303aa6d87c",
   "regimen": {
     "dose_mg": 400,
     "dose_mg_per_kg": 5,
     "body_weight_kg": 80,
     "infusion_hours": 0.5,
     "route": "intravenous constant-rate infusion"
-  },
-  "published_parameters": {
-    "clearanceAtCrcl92LPerH": 3.44,
-    "crclSlopePerMlMin": 0.00925,
-    "volumeOfDistributionL": 22.4,
-    "crclReferenceMlMin": 92
-  },
-  "published_residual_error": {
-    "proportional": 0.32,
-    "additive_mg_l": 0.056,
-    "note": "Recorded for provenance only; deliberately NOT applied to the reference curve."
   },
   "sampling": {
     "crcl_strata_ml_min": [45, 60, 75, 92, 110, 130],
@@ -28,24 +33,23 @@
   "units": { "time": "h", "dose": "mg", "concentration": "mg/L", "volume": "L", "clearance": "L/h" },
   "sources": [
     {
-      "role": "parameter values (Table S2, Bos row) and cohort descriptors (Table 1)",
+      "role": "structural model, cohort descriptors (Table 1), and the parameter values held in the Host-side holdout",
       "citation": "Duong A, Simard C, Williamson D, Marsot A. Model Re-Estimation: An Alternative for Poor Predictive Performance during External Evaluations? Example of Gentamicin in Critically Ill Patients. Pharmaceutics 2022;14(7):1426.",
       "doi": "10.3390/pharmaceutics14071426"
     },
     {
-      "role": "structural model and residual error magnitudes (Table S1)",
+      "role": "residual error magnitudes (Table S1)",
       "citation": "Bos JC, Prins JM, Misticio MC, Nunguiane G, Lang CN, Beirao JC, Mathot RAA, van Hest RM. Population pharmacokinetics with Monte Carlo simulations of gentamicin in a population of severely ill adult patients from sub-Saharan Africa. Antimicrob Agents Chemother 2019;63(4):e02328-18.",
       "doi": "10.1128/AAC.02328-18"
     }
   ],
-  "generator": "tools/generate_reference_data.mjs",
   "external_validation": {
     "file": "data/external_validation_veinstein2013.csv",
-    "role": "External consistency check ONLY. Not read by evaluator/judge.mjs and not part of the metric.",
+    "role": "Independent literature consistency check ONLY. Not read by evaluator/judge.mjs and not part of the metric.",
     "citation": "Veinstein A, Venisse N, Badin J, Pinsard M, Robert R, Dupuis A. Gentamicin in hemodialyzed critical care patients: early dialysis after administration of a high dose should be considered. Antimicrob Agents Chemother 2013;57(2):977-982.",
     "doi": "10.1128/AAC.01762-12",
     "pmcid": "PMC3553715",
-    "note": "Anuric/near-anuric ICU patients on intermittent haemodialysis; CrCl is not reported, so this cohort cannot constrain the CrCl slope. It is used to corroborate the model's implied non-renal clearance: extrapolating the published relation to CrCl = 0 gives 0.513 L/h = 8.5 mL/min, against the independently published population estimate CL_NHD = 0.1205 mL/min/kg (Table 4) = 9.1 mL/min at the cohort mean weight of 75.6 kg.",
+    "note": "Anuric/near-anuric ICU patients on intermittent haemodialysis; CrCl is not reported, so this cohort cannot constrain the CrCl slope. It corroborates the model's implied non-renal clearance: extrapolating the published relation to CrCl = 0 gives 0.513 L/h = 8.5 mL/min, against the independently published population estimate CL_NHD = 0.1205 mL/min/kg (Table 4) = 9.1 mL/min at the cohort mean weight of 75.6 kg.",
     "transcription_check": "Eight of nine summary columns reproduce the paper's printed Mean +/- SD exactly. CL_HD does not: the ten printed per-patient values give 74.72 +/- 23.57 mL/min against a printed 76.5 +/- 23.1, an inconsistency in the source. CL_HD is not used by any check."
   },
   "cohort": {

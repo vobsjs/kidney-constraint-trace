@@ -79,6 +79,13 @@ Notes:
 - **Only `[evaluator/judge.mjs, evaluator/pk_model.mjs]` begin with `evaluator/`** —
   they are protected by the evaluator policy. `tools/` is outside `mutable_globs`
   and is therefore rejected if a candidate touches it, but it is not hash-frozen.
+- The declared `dataset` files are the **noisy** fitting target and its regimen
+  metadata. The **noise-free** curve is deliberately not declared and does not
+  exist in this repository: it lives in a Host-side holdout outside the worktree,
+  whose location is not recorded here, so it is unreachable through any input the
+  evaluator or a candidate can see. Only the Host-side external check opens it.
+  Its SHA-256 is published in `data/dataset.json` so it can be audited without
+  being disclosed.
 - The registry is validated at load time. **An app restart is required** for the
   change to take effect; confirm with `dsh --profile <name> --dump-config` (note
   that the Electron-managed `desktop` profile refuses CLI dumps).
@@ -89,32 +96,38 @@ From this repository — see the platform blocker above; this cannot run on win3
 
 ```json
 {
-  "objective": "Minimise the Host-measured RMSE (mg/L) between the one-compartment gentamicin creatinine-clearance PK model and the frozen literature reference points, by tuning only the parameters in model/params.json.",
-  "run_tag": "gentamicin-crcl-fit-1",
+  "objective": "Minimise the Host-measured RMSE (mg/L) between the one-compartment gentamicin creatinine-clearance PK model and the frozen noisy literature-derived reference points, by tuning only the parameters in model/params.json.",
+  "run_tag": "gentamicin-crcl-fit-2",
   "evaluator_id": "gentamicin-crcl-fit",
   "mutable_globs": ["model/params.json"],
-  "target": 0.0001,
+  "target": 3.2,
   "max_experiments": 20,
   "timeout_ms": 120000,
   "constraints": [
     "Keep the one-compartment structure and the linear creatinine-clearance relationship; tune numeric parameters only.",
-    "clearanceAtCrcl92LPerH and volumeOfDistributionL must stay positive; crclSlopePerMlMin must stay non-negative."
+    "clearanceAtCrcl92LPerH and volumeOfDistributionL must stay positive; crclSlopePerMlMin must stay non-negative.",
+    "The data span CrCl 45-130 mL/min; do not extrapolate the linear CrCl relationship outside that range."
   ]
 }
 ```
 
-`target` = 1e-4 mg/L is reachable but non-trivial: the reference CSV is rounded to
-six decimals, so the rounding floor is ~3.1e-7 mg/L RMSE.
+**`target` is 3.2 mg/L, not a near-zero epsilon.** The reference curve now carries
+the publication's residual error (proportional 0.32 + additive 0.056 mg/L), so the
+achievable floor is the noise, not numerical zero: the expected RMSE at the true
+parameters is **3.962908 mg/L**, and the multi-start optimum reaches **3.392378**.
+A target near zero would be unreachable.
 
 ## 3. Reference values
 
 | | RMSE (mg/L) |
 | --- | --- |
-| Shipped baseline | 5.592262 |
-| Optimum (`tools/reference_optimizer.mjs`) | 2.6970e-7 |
-| Published parameters, evaluated directly | 3.12e-7 |
+| Shipped baseline | 6.434202 |
+| Optimum (`tools/reference_optimizer.mjs`) | 3.392378 |
+| Expected RMSE at the true parameters (noise floor) | 3.962908 |
 
-The local optimizer reaches a marginally lower RMSE than the published parameters
-because it also absorbs the CSV rounding; its fitted values round to the published
-values at six significant figures. See `results/reference_fit.json`.
+Six widely separated restarts converge to the same optimum (worst − best RMSE
+= 9.8e-15). Parameter recovery, the estimator's sampling distribution over 200
+independent seeds, and the external check against the noise-free curve are all
+recorded in the Host-side `LEDGER.md` — they are kept out of this repository
+because reporting them here would disclose the true parameter values.
 

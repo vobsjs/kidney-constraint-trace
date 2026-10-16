@@ -1,61 +1,50 @@
 {
   "generatedBy": "tools/reference_optimizer.mjs",
-  "note": "Reference optimisation performed locally because dsh-autoresearch cannot run on win32 (StateLayout POSIX mode check is unsatisfiable).",
+  "note": "Fit of the NOISY reference curve. True values are not accessible from this repository; uncertainty and the external check are Host-side.",
   "referencePoints": 36,
   "metric": "rmse_mg_l",
-  "target": 0.0001,
-  "baselineRmseMgL": 5.5922623465961685,
-  "optimisedRmseMgL": 2.696976006496892e-7,
-  "fitted": {
-    "clearanceAtCrcl92LPerH": 3.4399999450303946,
-    "crclSlopePerMlMin": 0.009250000374148856,
-    "volumeOfDistributionL": 22.40000031907033
+  "baseline": {
+    "parameters": [
+      6,
+      0.003,
+      40
+    ],
+    "rmseMgL": 6.434202274931359
   },
-  "published": {
-    "clearanceAtCrcl92LPerH": 3.44,
-    "crclSlopePerMlMin": 0.00925,
-    "volumeOfDistributionL": 22.4
+  "optimised": {
+    "rmseMgL": 3.3923776228753297,
+    "parameters": {
+      "clearanceAtCrcl92LPerH": 3.581546484436042,
+      "crclSlopePerMlMin": 0.004452601785449996,
+      "volumeOfDistributionL": 21.875649154530596
+    }
   },
-  "maxRelativeDeviation": 4.0448524972368116e-8,
   "multiStart": [
-    {
-      "start": [
-        3,
-        0.005,
-        25
-      ],
-      "rmseMgL": 2.696976006496892e-7,
-      "parameters": [
-        3.4399999450303946,
-        0.009250000374148856,
-        22.40000031907033
-      ]
-    },
-    {
-      "start": [
-        2,
-        0.03,
-        15
-      ],
-      "rmseMgL": 2.6969760140145615e-7,
-      "parameters": [
-        3.439999945027075,
-        0.009250000374191995,
-        22.400000319046267
-      ]
-    },
     {
       "start": [
         10,
         0.02,
         60
       ],
-      "rmseMgL": 2.696976018847869e-7,
-      "parameters": [
-        3.439999945024493,
-        0.009250000374128299,
-        22.40000031903044
-      ]
+      "rmseMgL": 3.3923776228753297,
+      "parameters": {
+        "clearanceAtCrcl92LPerH": 3.581546484436042,
+        "crclSlopePerMlMin": 0.004452601785449996,
+        "volumeOfDistributionL": 21.875649154530596
+      }
+    },
+    {
+      "start": [
+        3,
+        0.005,
+        25
+      ],
+      "rmseMgL": 3.392377622875331,
+      "parameters": {
+        "clearanceAtCrcl92LPerH": 3.5815464952189497,
+        "crclSlopePerMlMin": 0.0044526023293301464,
+        "volumeOfDistributionL": 21.87564911152831
+      }
     },
     {
       "start": [
@@ -63,12 +52,25 @@
         0.0005,
         5
       ],
-      "rmseMgL": 2.696976022040377e-7,
-      "parameters": [
-        3.439999945044085,
-        0.009250000374293828,
-        22.40000031902104
-      ]
+      "rmseMgL": 3.392377622875331,
+      "parameters": {
+        "clearanceAtCrcl92LPerH": 3.581546426184125,
+        "crclSlopePerMlMin": 0.004452601650766294,
+        "volumeOfDistributionL": 21.875648983485135
+      }
+    },
+    {
+      "start": [
+        2,
+        0.03,
+        15
+      ],
+      "rmseMgL": 3.3923776228753315,
+      "parameters": {
+        "clearanceAtCrcl92LPerH": 3.5815464202160077,
+        "crclSlopePerMlMin": 0.0044526016792547606,
+        "volumeOfDistributionL": 21.875649328504174
+      }
     },
     {
       "start": [
@@ -76,12 +78,12 @@
         0.001,
         10
       ],
-      "rmseMgL": 2.6969760354806835e-7,
-      "parameters": [
-        3.4399999450177385,
-        0.009250000374210423,
-        22.400000318994042
-      ]
+      "rmseMgL": 3.3923776228753346,
+      "parameters": {
+        "clearanceAtCrcl92LPerH": 3.581546566454525,
+        "crclSlopePerMlMin": 0.004452601702272735,
+        "volumeOfDistributionL": 21.875648722075297
+      }
     },
     {
       "start": [
@@ -89,13 +91,14 @@
         0.003,
         40
       ],
-      "rmseMgL": 2.696976039420294e-7,
-      "parameters": [
-        3.439999945022014,
-        0.009250000374087205,
-        22.400000319077044
-      ]
+      "rmseMgL": 3.3923776228753395,
+      "parameters": {
+        "clearanceAtCrcl92LPerH": 3.5815463309487807,
+        "crclSlopePerMlMin": 0.004452601709897806,
+        "volumeOfDistributionL": 21.8756493444564
+      }
     }
   ],
-  "meetsTarget": true
+  "worstMinusBestRmse": 9.769962616701378e-15,
+  "referenceCsvSha256": null
 }
