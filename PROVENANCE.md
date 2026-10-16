@@ -101,6 +101,19 @@ the rebound and therefore does not need the sample to be at equilibrium.
 | Between-patient CV in Kc, for the sample size | 35% | **✔ reported as a sweep** (0% / 20% / 35% / 50%), not as a single value |
 | Protocol target n | 20 sessions, extend to 60 if observed SD > 0.18 | pre-specified, **approved** |
 
+## 3b. Reference downloads: deliberately not carried into the repository
+
+Verifying the rate equation required downloading the HEMO Study Manual of
+Operations. The cached copies — the 3 MB manual PDF, its extracted text, and the
+PMC page for the HEMO kinetics paper — are **not** committed, because they are
+public, re-fetchable, and would dominate the repository's size. Their URLs are
+recorded above; the *conclusion* drawn from them is checked by
+`dialysis_session/estimator.mjs`, whose self-test reproduces the manual's worked
+example (`spKt/V 1.2 over 3 h → gap 0.21`). That check runs in
+`tools/verify_all.mjs`, so the evidence is reproducible even without the downloads.
+
+---
+
 ## 4. What is validated, assumed, and unverified — in one place
 
 **Validated against real, independent measurement**
