@@ -1,0 +1,109 @@
+{
+  "name": "Manufacturer in-vitro haemodialyzer clearance data (EN ISO 8637-1:2020)",
+  "why_this_file": "Ground truth for the dialyzer model. These are real, published, ISO-standard-conformant bench measurements from two independent manufacturers, transcribed verbatim and used to (a) validate the counter-current KoA model and (b) derive per-solute KoA values. They are public data and involve no seal.",
+  "conditions": {
+    "Qf_ml_min": 0,
+    "Qd_ml_min": 500,
+    "note": "Clearances are mL/min. Only the Qf = 0 (pure diffusive) columns are used; post-dilution HDF columns are excluded because they involve convective transport and a sieving coefficient, which is a different model."
+  },
+  "sources": [
+    {
+      "manufacturer": "Asahi Kasei Medical",
+      "product": "APS-HE series (APS-18HE, APS-22HE, APS-26HE)",
+      "url": "https://www.asahi-kasei.co.jp/medical/en/dialysis/product/apsh/performance.html",
+      "stated_standard": "EN ISO 8637-1:2020",
+      "retrieved": "2026-10-16"
+    },
+    {
+      "manufacturer": "Nipro",
+      "product": "ELISIO HX series (11HX, 13HX, 15HX, 17HX, 19HX, 21HX)",
+      "document": "ELISIO HX spec sheet MM-2213, approved 27 Jul 2022",
+      "url": "https://nipro-expo.com/sites/default/files/2024-04/ELISIO%20HX%20-%20MM-2213%20-%20EN%20%20-%2027Jul2022%20-%20Approved.pdf",
+      "retrieved": "2026-10-16"
+    }
+  ],
+  "solutes": {
+    "urea": { "molecular_weight_da": 60 },
+    "creatinine": { "molecular_weight_da": 113 },
+    "phosphate": { "molecular_weight_da": 96 },
+    "vitamin_b12": { "molecular_weight_da": 1355 },
+    "inulin": { "molecular_weight_da": 5000 },
+    "myoglobin": { "molecular_weight_da": 16700 }
+  },
+  "devices": [
+    {
+      "id": "APS-18HE", "manufacturer": "Asahi Kasei", "surface_area_m2": 1.8,
+      "published_koa_urea_ml_min": 1344,
+      "clearances": {
+        "Qb200": { "urea": 198, "creatinine": 198, "phosphate": 189, "vitamin_b12": 150, "inulin": 102 },
+        "Qb300": { "urea": 278, "creatinine": 274, "phosphate": 248, "vitamin_b12": 174, "inulin": 113 }
+      }
+    },
+    {
+      "id": "APS-22HE", "manufacturer": "Asahi Kasei", "surface_area_m2": 2.2,
+      "published_koa_urea_ml_min": 1559,
+      "clearances": {
+        "Qb200": { "urea": 199, "creatinine": 199, "phosphate": 192, "vitamin_b12": 162, "inulin": 116 },
+        "Qb300": { "urea": 284, "creatinine": 281, "phosphate": 260, "vitamin_b12": 192, "inulin": 131 }
+      }
+    },
+    {
+      "id": "APS-26HE", "manufacturer": "Asahi Kasei", "surface_area_m2": 2.6,
+      "published_koa_urea_ml_min": 2022,
+      "clearances": {
+        "Qb200": { "urea": 200, "creatinine": 200, "phosphate": 196, "vitamin_b12": 171, "inulin": 125 },
+        "Qb300": { "urea": 289, "creatinine": 288, "phosphate": 269, "vitamin_b12": 206, "inulin": 145 }
+      }
+    },
+    {
+      "id": "11HX", "manufacturer": "Nipro", "surface_area_m2": null, "published_koa_urea_ml_min": null,
+      "clearances": {
+        "Qb200": { "urea": 191, "creatinine": 179, "phosphate": 173, "vitamin_b12": 126, "myoglobin": 69 },
+        "Qb300": { "urea": 255, "creatinine": 230, "phosphate": 212, "vitamin_b12": 146, "myoglobin": 76 },
+        "Qb400": { "urea": 296, "creatinine": 260, "phosphate": 235, "vitamin_b12": 158, "myoglobin": 81 }
+      }
+    },
+    {
+      "id": "13HX", "manufacturer": "Nipro", "surface_area_m2": null, "published_koa_urea_ml_min": null,
+      "clearances": {
+        "Qb200": { "urea": 195, "creatinine": 185, "phosphate": 180, "vitamin_b12": 139, "myoglobin": 80 },
+        "Qb300": { "urea": 266, "creatinine": 244, "phosphate": 227, "vitamin_b12": 163, "myoglobin": 88 },
+        "Qb400": { "urea": 313, "creatinine": 280, "phosphate": 253, "vitamin_b12": 178, "myoglobin": 96 }
+      }
+    },
+    {
+      "id": "15HX", "manufacturer": "Nipro", "surface_area_m2": null, "published_koa_urea_ml_min": null,
+      "clearances": {
+        "Qb200": { "urea": 197, "creatinine": 190, "phosphate": 186, "vitamin_b12": 150, "myoglobin": 92 },
+        "Qb300": { "urea": 275, "creatinine": 255, "phosphate": 241, "vitamin_b12": 179, "myoglobin": 100 },
+        "Qb400": { "urea": 327, "creatinine": 297, "phosphate": 272, "vitamin_b12": 196, "myoglobin": 108 }
+      }
+    },
+    {
+      "id": "17HX", "manufacturer": "Nipro", "surface_area_m2": null, "published_koa_urea_ml_min": null,
+      "clearances": {
+        "Qb200": { "urea": 198, "creatinine": 194, "phosphate": 190, "vitamin_b12": 159, "myoglobin": 102 },
+        "Qb300": { "urea": 281, "creatinine": 266, "phosphate": 252, "vitamin_b12": 192, "myoglobin": 110 },
+        "Qb400": { "urea": 338, "creatinine": 310, "phosphate": 286, "vitamin_b12": 210, "myoglobin": 119 }
+      }
+    },
+    {
+      "id": "19HX", "manufacturer": "Nipro", "surface_area_m2": null, "published_koa_urea_ml_min": null,
+      "clearances": {
+        "Qb200": { "urea": 199, "creatinine": 197, "phosphate": 194, "vitamin_b12": 167, "myoglobin": 112 },
+        "Qb300": { "urea": 287, "creatinine": 275, "phosphate": 261, "vitamin_b12": 203, "myoglobin": 122 },
+        "Qb400": { "urea": 348, "creatinine": 321, "phosphate": 299, "vitamin_b12": 223, "myoglobin": 130 }
+      }
+    },
+    {
+      "id": "21HX", "manufacturer": "Nipro", "surface_area_m2": null, "published_koa_urea_ml_min": null,
+      "clearances": {
+        "Qb200": { "urea": 200, "creatinine": 198, "phosphate": 196, "vitamin_b12": 174, "myoglobin": 121 },
+        "Qb300": { "urea": 290, "creatinine": 280, "phosphate": 268, "vitamin_b12": 214, "myoglobin": 132 },
+        "Qb400": { "urea": 355, "creatinine": 331, "phosphate": 310, "vitamin_b12": 235, "myoglobin": 142 }
+      }
+    }
+  ],
+  "blood_flows_ml_min": { "Qb200": 200, "Qb300": 300, "Qb400": 400 },
+  "counts": { "devices": 9, "solute_device_flow_values": 120 }
+}
