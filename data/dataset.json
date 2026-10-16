@@ -39,6 +39,15 @@
     }
   ],
   "generator": "tools/generate_reference_data.mjs",
+  "external_validation": {
+    "file": "data/external_validation_veinstein2013.csv",
+    "role": "External consistency check ONLY. Not read by evaluator/judge.mjs and not part of the metric.",
+    "citation": "Veinstein A, Venisse N, Badin J, Pinsard M, Robert R, Dupuis A. Gentamicin in hemodialyzed critical care patients: early dialysis after administration of a high dose should be considered. Antimicrob Agents Chemother 2013;57(2):977-982.",
+    "doi": "10.1128/AAC.01762-12",
+    "pmcid": "PMC3553715",
+    "note": "Anuric/near-anuric ICU patients on intermittent haemodialysis; CrCl is not reported, so this cohort cannot constrain the CrCl slope. It is used to corroborate the model's implied non-renal clearance: extrapolating the published relation to CrCl = 0 gives 0.513 L/h = 8.5 mL/min, against the independently published population estimate CL_NHD = 0.1205 mL/min/kg (Table 4) = 9.1 mL/min at the cohort mean weight of 75.6 kg.",
+    "transcription_check": "Eight of nine summary columns reproduce the paper's printed Mean +/- SD exactly. CL_HD does not: the ten printed per-patient values give 74.72 +/- 23.57 mL/min against a printed 76.5 +/- 23.1, an inconsistency in the source. CL_HD is not used by any check."
+  },
   "cohort": {
     "n_subjects": 87,
     "description": "Critically ill adult ICU patients (Quebec, Canada): HSCM n=39 and IUCPQ n=48.",

@@ -95,18 +95,50 @@ not raw observations. The sources examined and rejected:
 
 | Source | Why not used |
 | --- | --- |
-| Veinstein 2013, *AAC* 57(2):977-982, [doi:10.1128/AAC.01762-12](https://doi.org/10.1128/AAC.01762-12) | Real per-patient data, but the cohort is anuric/near-anuric on haemodialysis, so renal clearance is ~0 and the CrCl *proportionality* is unidentifiable. Its per-patient Table 3 is also **absent from the openly served full text** (only the abstract is retrievable), so its individual values could not be verified and are deliberately not used. |
-| Storgaard 2026, *Kidney Int Rep*, [doi:10.1016/j.ekir.2026.107020](https://doi.org/10.1016/j.ekir.2026.107020) | Good renal-function spread, but individual concentration-time points appear only in a figure, not a table. |
-| Staatz 2005; Rodvold 1988 | Population-level clearance summaries only; no per-patient concentration-time numbers. |
+| Veinstein 2013, *AAC* 57(2):977-982, [doi:10.1128/AAC.01762-12](https://doi.org/10.1128/AAC.01762-12) | Real, openly tabulated per-patient data (Table 3), and it **was** retrieved and verified here. Rejected as the *fit* target because the cohort is anuric/near-anuric on haemodialysis, so renal clearance is ~0 and the CrCl *proportionality* is unidentifiable. Additionally, only its `Cmax` at 1 h is a measured value; `C24`/`C48` are predictions of the same one-compartment model, so fitting them would be partly circular. Retained instead as an **external check** (below and `data/external_validation_veinstein2013.csv`). |
+| Storgaard 2026, *Kidney Int Rep*, [doi:10.1016/j.ekir.2026.107020](https://doi.org/10.1016/j.ekir.2026.107020) | Genuine wide renal-function spread (mGFR 13-109 mL/min) with 460 observations, but the individual concentration-time points appear **only in a figure**, not a table. Not digitised here: reading values off a semilog plot with overlapping colour groups would inject unquantified error, and presenting them as exact would misrepresent them. |
+| Staatz 2005; Rodvold 1988; Zaske 1982; Sawchuk & Zaske 1976 | Population-level clearance summaries or ranges only; no per-patient concentration-time numbers retrievable from open sources. |
 
-**External consistency anchor.** The one openly verifiable number from Veinstein
-2013 (abstract) is a volume of distribution of **0.21 ± 0.06 L/kg** in critically
-ill haemodialysed patients (single 6 mg/kg infusion over 30 min; Cmax 31.8 ± 16.8
-mg/L; C24 4.1 ± 2.3 mg/L). At the 80 kg cohort mean the reference model's V = 22.4 L
-is 0.28 L/kg, which is higher — as expected, since Duong 2022 is a general ICU
-cohort and the structural model carries no weight covariate on V. This is a
-plausibility check on the *magnitude* of V only; it is **not** part of the metric and
-does not affect the optimum.
+### External consistency check (not part of the metric)
+
+The reference model carries an implicit **non-renal clearance**: extrapolating the
+published relation to CrCl = 0 gives
+
+```
+CL(0) = 3.44 * (1 + 0.00925 * (0 - 92)) = 0.513 L/h = 8.5 mL/min
+```
+
+Veinstein 2013 independently measured exactly this quantity in a completely
+different population — anuric critically ill patients on intermittent
+haemodialysis — and reported a population estimate of
+**CL_NHD = 0.1205 mL/min/kg** (Table 4, RSE 16%). At that study's mean actual body
+weight of 75.6 kg this is **9.1 mL/min**.
+
+**Independent agreement within ~7%.** Since Veinstein's cohort may retain minimal
+residual renal function, its CL_NHD is an upper bound on true non-renal clearance,
+so the agreement is at least this close. Because these patients were anuric they
+cannot constrain the CrCl *slope*; what they corroborate is the **non-renal
+intercept**, which is the part of the model that a CrCl-only regression would
+otherwise leave unconstrained.
+
+For completeness, the same study's volume estimate (V = 0.201 L/kg, Table 4;
+0.209 ± 0.060 L/kg per-patient) corresponds to 0.25-0.28 L/kg at the Duong 2022
+cohort mean weight of 80 kg. The reference model's V = 22.4 L is 0.28 L/kg, at the
+upper end of that band — consistent, given Duong 2022 is a general ICU cohort and
+the structural model carries no weight covariate on V.
+
+The per-patient values behind these checks were retrieved from the open PMC full
+text and are stored verbatim in `data/external_validation_veinstein2013.csv`.
+Transcription was verified by recomputing the paper's own summary row: eight of
+nine columns reproduce it exactly. The exception is `CL_HD`, where the ten printed
+per-patient values give 74.72 ± 23.57 mL/min but the printed summary row reads
+**76.5 ± 23.1** — an inconsistency in the source, not a transcription error (the
+published summary string was confirmed in the raw HTML). `CL_HD` is therefore not
+used by any check here; the non-renal comparison rests on the Table 4 population
+estimate, which is independent of that row.
+
+Neither check feeds the metric or moves the optimum; they are reported so that the
+recovered parameters can be judged against evidence the fit never saw.
 
 ## 3. The metric
 
