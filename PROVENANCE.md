@@ -146,6 +146,7 @@ example (`spKt/V 1.2 over 3 h → gap 0.21`). That check runs in
 - the charcoal creatinine capacity: **an assumption I invented**, because no
   citable figure exists in the accessible literature (§6) — this is the single
   weakest number in the package;
+- the required faradaic efficiency (**FE ≥ 40 %**, §8) is **derived**, not measured;
 - the electrochemical energy requirement: **not sourced at all**, stated only as a
   derived requirement of ≤ 11.4 kWh/kg (§7);
 - **no hardware has ever been built or measured by this project.**
@@ -201,3 +202,30 @@ capacities as single-source.
 | Li-ion pack energy density | 250 Wh/kg | **✔ typical published value** |
 | Wearable reference device | <5 kg, 400 mL water, sorbent, NCT02280005 | **✔ read** — Gura's WAK, reached clinical trials |
 | Electrochemical energy per kg urea | **NOT SOURCED** | **✖ none claimed** — the NSF PAR copy was unreachable and one open-access PDF was CID-glyph encoded. Stated as a *requirement* (≤ 11.4 kWh/kg), never a measurement |
+
+## 8. Stage 10 — the electrochemical conversion
+
+| Constant | Value | Status |
+| --- | --- | --- |
+| Electrons per urea (complete oxidation to CO2 + N2 + H2O) | **6** | **✔ read** — Carpenter & Stuve |
+| Electrons per creatinine | 21 | **✔ read** — same, and noted as kinetically limited |
+| Operating potential (constant-potential holds) | 0.6 V vs Hg/HgO | **✔ read**
+| Urea oxidation onset | 0.45 V vs Hg/HgO at pH 14 | **✔ read**
+| Hg/HgO in 1 M KOH vs SHE | +0.140 V | **✔ standard electrochemistry** |
+| **V_cell = 1.72 V** | derived: anode 0.740 V vs SHE; HER cathode −0.979 V vs SHE | **✔ derived** |
+| Thermodynamic minimum | 0.08 V, so overpotential **1.64 V** | **✔ derived** |
+| HER overpotential on Ni | 0.15 V | **⚠ assume** — order-of-magnitude, not read |
+| Creatinine suppression of urea oxidation charge | **19%** at 0.18 mM | **✔ read** — a CHARGE reduction, **not** a faradaic efficiency |
+| Site-blocking onset | 120 s | **✔ read** |
+| **Required faradaic efficiency** | **FE ≥ 40%** | **✔ derived** from the stage-9 specification and the V_cell above |
+
+**Citation:** Carpenter K, Stuve EM. *Electrooxidation of Urea and Creatinine on
+Nickel Foam-based Electrocatalysts.* ChemRxiv preprint; published J Appl Electrochem
+2021. doi:10.1007/s10800-021-01545-1. Funded by **Northwest Kidney Centers**, aimed
+at portable dialysis at dialysate concentrations.
+
+**Not claimed:** that any real cell meets FE ≥ 40%. The 19% figure is a charge
+reduction under specific conditions, not an absolute efficiency, so the two are not
+directly comparable.
+
+---

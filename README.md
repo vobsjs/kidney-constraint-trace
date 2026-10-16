@@ -22,6 +22,7 @@ clinical study protocol with a validated analysis pipeline**.
 | 7 | [`artificial_kidney/`](./artificial_kidney/LEDGER_STAGE7.md) | The cartridge as **parallel capacity pools**; urea turns out not to be the binding one | Cartridge life and consumable demand become real quantities. |
 | 8 | [`artificial_kidney/`](./artificial_kidney/LEDGER_STAGE8.md) | The charcoal assumption, and **patient variability** as a distribution rather than a range | A device sized for the median fails for 25% of patients. |
 | 9 | [`artificial_kidney/`](./artificial_kidney/LEDGER_STAGE9.md) | **Regenerable sorbent**: the limit changes kind, from mass to power | The right *kind* of limit — the one biology also operates under. |
+| 10 | [`artificial_kidney/`](./artificial_kidney/LEDGER_STAGE10.md) | The power specification **converted into a measurable faradaic efficiency** (FE ≥ 40%), tested against the one relevant experiment | Turns an untestable device requirement into a bench measurement. |
 
 **Stages 1–3 are not needed to understand or run the study.** They are kept
 because the estimator and design machinery were developed there and are reused

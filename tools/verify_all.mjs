@@ -174,6 +174,27 @@ check({
   extract: grab(/required clearance\s+([\d.]+) mL\/min/),
 })
 check({
+  name: 'stage 10: cell voltage derived from sourced electrode potentials',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_faradaic.mjs'],
+  expect: '1.72',
+  extract: grab(/=> V_cell\s+([\d.]+) V/),
+})
+check({
+  name: 'stage 10: specification converted to a required faradaic efficiency',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_faradaic.mjs'],
+  expect: '40%',
+  extract: grab(/EQUIVALENT TO\s+FE >= ([\d]+%)/),
+})
+check({
+  name: 'stage 10: energy per kg at 100% faradaic efficiency',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_faradaic.mjs'],
+  expect: '4.60',
+  extract: grab(/\s100%\s+([\d.]+)\s/),
+})
+check({
   name: 'stage 9: renal power budget is reproduced from oxygen consumption',
   command: process.execPath,
   args: ['artificial_kidney/tools/run_regenerable.mjs'],

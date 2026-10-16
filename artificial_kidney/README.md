@@ -284,6 +284,71 @@ and housing. A plausible total — which is the only claim made, since the WAK
 carried a *disposable* sorbent. This checks the **mass scale**, not the regenerable
 path.
 
+## 3e. Stage 10 — the specification, converted into something measurable
+
+Stage 9 produced **≤ 11.4 kWh per kg of urea** and could not test it: an energy per
+kg is a **device** quantity, and no device exists.
+
+It is algebraically equivalent to an **electrode** quantity any lab can measure:
+
+```
+energy per kg = n · F · V_cell / (M_urea · FE)
+```
+
+| term | value | status |
+| --- | --- | --- |
+| n, electrons per urea | **6** | **sourced** |
+| V_cell | **1.72 V** | **derived** from sourced electrode potentials |
+| M_urea | 0.06006 kg/mol | fixed |
+| **FE, faradaic efficiency** | **?** | **the thing to measure** |
+
+**V_cell derivation:** anode at 0.6 V vs Hg/HgO (= 0.740 V vs SHE) against a HER
+cathode at pH 14 with 0.15 V overpotential (−0.979 V vs SHE) → **1.72 V**. The
+thermodynamic minimum is 0.08 V, so **the overpotential is 1.64 V** — "sluggish
+kinetics" is now a number rather than a claim.
+
+### The specification becomes a measurement
+
+| FE | energy (kWh/kg) | power (W) | meets ≤ 11.4? |
+| --- | --- | --- | --- |
+| 100% | 4.60 | 2.9 | **yes** |
+| 60% | 7.67 | 4.8 | **yes** |
+| 50% | 9.20 | 5.7 | **yes** |
+| **40%** | **11.51** | 7.2 | **the threshold** |
+| 30% | 15.34 | 9.6 | no |
+| 20% | 23.01 | 14.4 | no |
+
+> **The specification is equivalent to FE ≥ 40%.**
+
+### The one directly relevant experiment, and it is not encouraging
+
+Carpenter & Stuve, *Electrooxidation of Urea and Creatinine on Nickel Foam-based
+Electrocatalysts* (ChemRxiv; J Appl Electrochem 2021) — **funded by Northwest
+Kidney Centers**, aimed explicitly at portable dialysis, at dialysate
+concentrations (urea 10 mM, creatinine 0.18 mM).
+
+| finding | effect on |
+| --- | --- |
+| 0.18 mM creatinine cuts urea oxidation charge **19%** | **FE** |
+| on plain Ni foam, creatinine "severely limits" urea oxidation | **FE** |
+| site blocking measurable after 120 s | **FE** |
+| oxygen evolution competes at the same potentials | **FE** |
+
+**Every finding attacks faradaic efficiency, not cell voltage.** The risk is not
+that the voltage is too high — it is that the current is shared between urea,
+creatinine and water, and only the urea fraction counts.
+
+### Verdict
+
+**Unknown, and now measurable.** No number here is a measurement of a real cell:
+the source reports a 19% *charge* reduction, not an absolute FE, so the two cannot
+be compared directly. Settling it needs one experiment — **FE for urea oxidation in
+a dialysate-like stream containing creatinine and bicarbonate, at dialysate
+concentrations, over hours.**
+
+If interference compounds with OER, FE falls well below 40% and the specification
+**fails**. If OER is suppressed and creatinine blocking avoided, it holds.
+
 ## 4. Results
 
 `tools/run_analysis.mjs`:
@@ -386,6 +451,8 @@ deepening the dialyzer:
 | `capacity_competition.mjs` | stage 7: the parallel capacity pools and their lifetimes |
 | `patient_variability.mjs` | stage 8: the charcoal assumption and the population distribution |
 | `regenerable.mjs` | stage 9: the power-limit model and the constraint comparison |
+| `electrochemistry.mjs` | stage 10: sourced electrochemistry and the FE conversion |
 | `tools/run_analysis.mjs` | checks 1–5 |
 | `tools/run_variability.mjs` | checks 6–7 |
 | `tools/run_regenerable.mjs` | checks 8–11 |
+| `tools/run_faradaic.mjs` | checks 12–15 |

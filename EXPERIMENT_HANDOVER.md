@@ -56,11 +56,19 @@ falsifiable claim about hardware.
 
 | | |
 | --- | --- |
-| **Measure** | energy per kg of urea removed, with current efficiency |
+| **Measure** | **faradaic efficiency for urea oxidation**. Stage 10 shows the specification is equivalent to **FE ≥ 40%** at V_cell = 1.72 V — measure FE, not energy; it is an electrode quantity. |
 | **Threshold** | **≤ 11.4 kWh/kg** to fit inside the ~7 W a kidney itself spends |
 | **Source of the number** | renal oxygen consumption, 7–10% of 250 mL/min at 20.1 kJ/L O₂ |
 | **If it fails** | the power budget exceeds what biology uses, and a wearable would need a battery too heavy to carry |
 | **Why it matters** | this is the test of whether "mass limit → power limit" is a genuine advance or a lateral move |
+
+**A directly relevant experiment already exists, and it is not encouraging.**
+Carpenter & Stuve (funded by Northwest Kidney Centers, aimed at portable dialysis,
+dialysate concentrations) find that 0.18 mM creatinine cuts urea oxidation charge
+by **19%**, that creatinine "severely limits" urea oxidation on plain Ni foam, and
+that oxygen evolution competes at the same potentials. **Every one of those attacks
+faradaic efficiency, not cell voltage** — which is exactly why FE, not energy, is
+the thing to measure. Details in `artificial_kidney/README.md` §3e.
 
 **Note the direction of published risk.** Urea electrooxidation is widely reported as
 sluggish with high overpotential, which pushes energy per kg **up**. I could not
