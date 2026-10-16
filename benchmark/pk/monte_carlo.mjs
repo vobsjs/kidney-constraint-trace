@@ -150,7 +150,11 @@ function main() {
     committedFit: Object.fromEntries(PARAMETER_NAMES.map((n, j) => [n, committed[j]])),
     committedZScores: zScores,
     coverage,
-    elapsedSeconds: Number(elapsed),
+    // NOTE: no wall-clock timing is written into this artifact. It is committed and
+    // tools/verify_all.mjs re-runs this script, so a timing field would make every
+    // verification run dirty the working tree -- and would make `git status`
+    // useless as a check that a clone is unmodified. Timing is printed to stdout
+    // instead, where it belongs.
   }
   writeFileSync(join(here, 'monte_carlo.json'), `${JSON.stringify(artifact, null, 2)}\n`, 'utf8')
   process.stdout.write('wrote monte_carlo.json\n')
