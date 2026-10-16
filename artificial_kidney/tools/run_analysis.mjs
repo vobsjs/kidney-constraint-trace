@@ -97,10 +97,12 @@ process.stdout.write(`                              (single pass burns ${(single
 process.stdout.write(`    membrane area             proportionally SMALLER -- this is the easy part\n\n`)
 process.stdout.write(`  but the CARTRIDGE must still take up every gram generated:\n`)
 process.stdout.write(`    urea generation           ${demand.gUreaPerDay.toFixed(1)} g/day\n`)
-process.stdout.write(`    cartridge capacity        ${REDY.ureaCapacityG} g\n`)
-process.stdout.write(`    one cartridge lasts       ${demand.cartridgeDays.toFixed(1)} days\n`)
-process.stdout.write(`    cartridges per week       ${demand.cartridgesPerWeek.toFixed(1)}\n`)
-process.stdout.write(`    cartridges per year       ${demand.cartridgesPerYear.toFixed(0)}\n\n`)
+process.stdout.write(`    urea capacity (measured)  ${REDY.ureaCapacityG} g\n`)
+process.stdout.write(`    urea-only lifetime        ${demand.cartridgeDays.toFixed(1)} days\n`)
+process.stdout.write('    urea-only cartridges/wk   ' + demand.cartridgesPerWeek.toFixed(1) + '\n')
+process.stdout.write('\n')
+process.stdout.write('    ...but urea is NOT the binding pool. CHECK 5 replaces these with the\n')
+process.stdout.write('    multi-pool answer: 2.2-2.6 days, 2.7-3.1 cartridges per week.\n\n')
 process.stdout.write('  CONCLUSION, and it is the reason this module was worth building:\n')
 process.stdout.write('  closing the loop shrinks the MEMBRANE need by ~14x but leaves the CARTRIDGE\n')
 process.stdout.write('  demand exactly where it was, because that demand is set by generation alone.\n')
@@ -131,6 +133,52 @@ const normalBun = 15
 const neededCl = (UREA_GENERATION.mgNPerMin / (normalBun * 10)) * 1000
 process.stdout.write(`  To hold BUN at a normal ${normalBun} mg/dL continuously would need ${neededCl.toFixed(1)} mL/min,\n`)
 process.stdout.write(`  ${(neededCl / continuousCl).toFixed(1)}x the matched-dose clearance -- still a small membrane.\n`)
-process.stdout.write(`  The cartridge demand is UNCHANGED at ${demand.cartridgeDays.toFixed(1)} days per cartridge, ` +
-  `because it is set by generation.\n`)
+process.stdout.write('  The cartridge demand is UNCHANGED by any choice of clearance -- it is set by\n')
+process.stdout.write('  generation -- but CHECK 5 shows the urea-only figure understates it.\n')
 process.stdout.write('  That is the honest limit of today\'s sorbent technology.\n')
+
+// ---------------------------------------------------------------- check 5
+process.stdout.write('\nCHECK 5  Capacity competition: which pool binds?\n')
+process.stdout.write('='.repeat(76) + '\n')
+const { poolLifetimes, SORBENT, LOADS } = await import(
+  pathToFileURL(join(REPO, 'artificial_kidney', 'capacity_competition.mjs')).href
+)
+const competition = poolLifetimes()
+
+process.stdout.write('  Stage 6 modelled ONE capacity. There are several parallel pools, and\n')
+process.stdout.write('  the device dies when the first is exhausted.\n\n')
+for (const pool of competition.pools) {
+  process.stdout.write(`  ${pool.name}\n`)
+  process.stdout.write(`    binds      ${pool.binds}\n`)
+  const cap = pool.operativeCapacityMeq ?? pool.capacityMeq
+  process.stdout.write(`    capacity   ${cap.toFixed(0)} mEq` +
+    (pool.rangeMeq ? `  (published range ${pool.rangeMeq[0]}-${pool.rangeMeq[1]})` : '') + '\n')
+  for (const [species, load] of Object.entries(pool.loadBreakdown)) {
+    process.stdout.write(`      ${species.padEnd(18)} ${load.toFixed(1).padStart(7)} mEq/day\n`)
+  }
+  process.stdout.write(`    LIFETIME   ${pool.lifetimeDays.toFixed(2)} days\n\n`)
+}
+process.stdout.write(`  urea-only estimate (stage 6)  ${competition.ureaOnlyDays.toFixed(2)} days\n`)
+process.stdout.write(`  BINDING POOL                  ${competition.binding.name}\n\n`)
+
+// The HZO complement is published as a range, so the binding pool can switch.
+const sweep = []
+for (const meq of [SORBENT.hzoAnionComplementMeq.min, (SORBENT.hzoAnionComplementMeq.min + SORBENT.hzoAnionComplementMeq.max) / 2, SORBENT.hzoAnionComplementMeq.max]) {
+  const r = poolLifetimes({ hzoCapacityMeq: meq })
+  sweep.push({ meq, days: r.binding.lifetimeDays, pool: r.binding.name })
+}
+process.stdout.write('  across the published HZO range the binding pool SWITCHES:\n')
+for (const s of sweep) {
+  process.stdout.write(`    HZO ${String(s.meq).padStart(3)} mEq -> ${s.days.toFixed(2)} days, binding: ${s.pool}\n`)
+}
+const lo = Math.min(...sweep.map((s) => s.days))
+const hi = Math.max(...sweep.map((s) => s.days))
+process.stdout.write(`\n  CARTRIDGE LIFETIME  ${lo.toFixed(2)} - ${hi.toFixed(2)} days ` +
+  `(stage 6 said ${competition.ureaOnlyDays.toFixed(2)})\n`)
+process.stdout.write(`  CARTRIDGES PER WEEK ${(7 / hi).toFixed(1)} - ${(7 / lo).toFixed(1)} ` +
+  `(stage 6 said ${(7 / competition.ureaOnlyDays).toFixed(1)})\n`)
+process.stdout.write('\n  Urea is NOT the binding pool once the other layers are modelled. The two pools\n')
+process.stdout.write('  land within ~1.5% of each other at the mid-range capacity, which is what a\n')
+process.stdout.write('  deliberately balanced multi-layer design should do -- but a 1.5% agreement may\n')
+process.stdout.write('  also be coincidence, and across the published HZO range the binding pool moves.\n')
+process.stdout.write('  The honest statement is a RANGE, not a point value.\n')

@@ -174,6 +174,20 @@ check({
   extract: grab(/required clearance\s+([\d.]+) mL\/min/),
 })
 check({
+  name: 'capacity competition: urea is not the binding pool',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_analysis.mjs'],
+  expect: 'ZP (cations)',
+  extract: grab(/BINDING POOL\s+(.+)/),
+})
+check({
+  name: 'capacity competition: cartridge lifetime corrected to a range',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_analysis.mjs'],
+  expect: '2.22 - 2.64 days',
+  extract: grab(/CARTRIDGE LIFETIME\s+([\d.]+ - [\d.]+ days)/),
+})
+check({
   name: 'artificial kidney: continuous therapy removes the BUN swing',
   command: process.execPath,
   args: ['artificial_kidney/tools/run_analysis.mjs'],

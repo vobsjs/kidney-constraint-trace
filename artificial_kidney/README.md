@@ -56,6 +56,58 @@ kinetic detail only governs how abrupt the failure is. A sharp front is the
 observed behaviour of a packed ion-exchange bed, and the source describes exactly
 that (removal constant through the run, then breakthrough).
 
+
+## 3b. Stage 7 — capacity competition between species
+
+Stage 6 modelled **one** capacity: 43.7 g of urea. It recorded that as the stage's
+largest simplification, reasoning that a real cartridge must also bind potassium,
+phosphate, sulphate and bicarbonate, so the true lifetime must be shorter.
+
+**That reasoning was half wrong, and the truth is more useful.** The cartridge is
+not one pool that urea shares: it is **several parallel pools**, one per sorbent
+layer, and the device dies when the **first** of them is exhausted.
+
+| Pool | Binds | Published capacity | Lifetime |
+| --- | --- | --- | --- |
+| ZP (cation) | NH4+ from urea, K+, Ca2+, Mg2+, HCO3- | 1881 mEq operative | **2.64 days** |
+| HZO/alumina (anion) | phosphate, bicarbonate | 80–113 mEq | **2.68 days** (mid-range) |
+| activated charcoal | creatinine, urate, middle molecules | not published | not modelled |
+
+### The stoichiometry that closed a stage-6 open question
+
+Stage 6 recorded an arithmetic inconsistency it could not explain: the source gives
+**145.9 mEq** of ammonium for a 1/10-scale cartridge and calls that **43.7 g** of
+urea at full scale, which does not scale by ten.
+
+It does once the chemistry is right. Urease hydrolysis is
+`(NH2)2CO + H2O -> 2 NH3 + CO2` — **one urea yields two ammonium ions.**
+
+    43.7 g urea = 727.6 mmol = 1455 mEq NH4+  =  145.9 x 10
+
+which closes the gap exactly. **Stage 6's arithmetic was right; the stoichiometry I
+had assumed (1 mEq per mmol) was wrong.**
+
+### The correction, reported honestly
+
+| | stage 6 | stage 7 |
+| --- | --- | --- |
+| cartridge lifetime | 2.91 days | **2.22 – 2.64 days** |
+| cartridges per week | 2.4 | **2.7 – 3.1** |
+| required clearance vs intermittent | 14× lower | **14× lower — UNCHANGED** |
+
+**Urea is not the binding pool.** Once the other layers are modelled the cation
+pool binds at the mid-range HZO capacity, and the anion pool binds at the low end —
+the binding pool *switches* across the published HZO range, so the honest statement
+is a **range, not a point value**.
+
+The two pools land within ~1.5 % of each other. That is what a deliberately balanced
+multi-layer design should do — and it may also be coincidence. It is reported as an
+observation, not as evidence.
+
+**The 14× membrane result is untouched.** It is a clearance-and-flow result and
+does not depend on cartridge capacity. What changed is only the consumable figure,
+in the pessimistic direction.
+
 ## 4. Results
 
 `tools/run_analysis.mjs`:
@@ -131,7 +183,13 @@ deepening the dialyzer:
   sulphate and bicarbonate all compete for sorbent capacity, and the source
   documents that some of them displace others. The 43.7 g figure is a urea-only
   capacity; real cartridges must also bind everything else, so the true lifetime is
-  shorter than 2.9 days. **This is the largest simplification here.**
+  shorter than 2.9 days.
+
+  > **Superseded by stage 7 — see §3b.** The cartridge is now modelled as parallel
+  > capacity pools and the lifetime is a range (2.22–2.64 days). What remains
+  > unmodelled is the **activated-charcoal pool**, for which the source publishes no
+  > capacity; creatinine and urate therefore place no bound on the lifetime here.
+  > That is a known gap, not a solved one.
 2. **It does not model urease kinetics or inhibition.** The source notes cartridge-
   to-cartridge variation in urease activity and irreversible inhibition by heavy
   metals.
@@ -149,4 +207,5 @@ deepening the dialyzer:
 | --- | --- |
 | `modules.mjs` | the three functional modules; filtration and compartment are re-exports of validated code |
 | `system.mjs` | the closed loop, the regeneration simulation, and the modality comparison |
-| `tools/run_analysis.mjs` | checks 1–4 |
+| `capacity_competition.mjs` | stage 7: the parallel capacity pools and their lifetimes |
+| `tools/run_analysis.mjs` | checks 1–5 |
