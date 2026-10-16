@@ -1,5 +1,50 @@
 # kidney-constraint-trace — from a drug PK benchmark to a dialysis study protocol
 
+> ## To a stranger arriving here
+>
+> **What this is.** A ten-stage modelling project that traces the binding constraint
+> on an artificial kidney — from **mass** (how much sorbent a cartridge holds) to
+> **power** (how many watts the chemistry needs). It starts with a small
+> pharmacokinetic fitting benchmark and ends with two quantified, measurable
+> requirements for a wearable device.
+>
+> **What this is not.**
+> - **Not a clinical tool.** No regulatory clearance, not validated in patients, not
+>   for individual patient care.
+> - **Not a complete device.** Nothing here has been built or measured on hardware.
+>   Every result is computed from published data plus validated sub-models.
+> - **Not reviewed.** No ethics committee or clinician has seen it.
+> - **Not finished.** Two quantities the conclusion rests on are **measurements, not
+>   computations**, and neither has been made:
+>   1. **Faradaic efficiency** of electrochemical urea removal — must be **≥ 40 %**.
+>      No real cell has been measured.
+>   2. **Activated-charcoal creatinine capacity** — must be **≥ 14.8 mg/g**. The value
+>      currently used is **an assumption I invented**; no citable figure was found.
+>
+> **Where to start, by who you are.**
+>
+> | you are… | read | why |
+> | --- | --- | --- |
+> | a clinician / PI | [`HANDOVER.md`](./HANDOVER.md) → [`dialysis_session/PROTOCOL.md`](./dialysis_session/PROTOCOL.md) | an executable four-draw study protocol, and exactly what is missing before it can run |
+> | a bench / lab team | [`EXPERIMENT_HANDOVER.md`](./EXPERIMENT_HANDOVER.md) | the three testable specifications, what to measure, and what a failure would change |
+> | auditing the numbers | [`PROVENANCE.md`](./PROVENANCE.md) | every constant, its source, and whether it was verified, derived, assumed or never sourced |
+>
+> **How to check it yourself.** Pure Node.js, **no dependencies, no build step**:
+>
+> ```sh
+> node tools/verify_all.mjs      # 33 checks, ~1 min, all should pass
+> ```
+>
+> **The point of the project, in one line.** Across ten stages the artificial
+> kidney's binding constraint moved from *disposable sorbent mass* to *electrical
+> power* — and power is the kind of limit a real kidney also operates under, since it
+> spends ~7 W on active transport and has no cartridge to replace. That is the
+> closest this model gets to biology, and it is not biology: the chemistry is abiotic
+> and has no molecular selectivity.
+>
+> **License: MIT.** See [`LICENSE`](./LICENSE).
+
+
 Five stages of work on creatinine clearance, haemodialysis and dialysis dosing.
 It began as a small parameter-fitting benchmark and ended as a **reviewable
 clinical study protocol with a validated analysis pipeline**.
