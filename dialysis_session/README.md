@@ -177,6 +177,7 @@ patient model against individual outcomes. I hit it. What that means concretely:
 | **[`PROTOCOL.md`](./PROTOCOL.md)** | **the four-draw study: design, analysis plan, sample size, resources, approvals, and an honest audit of what is still missing** |
 
 The benchmark material (the noise simulator, the sampling designs and the comparison
-experiments) remains in a Host-side holdout outside this repository, so those numbers
-cannot be re-run from a clone of this package alone. `LEDGER.md` -- the decision
-record, and the document a clinical collaborator should read first -- is in this package.
+experiments) is in [`benchmark/dialysis_session/`](../benchmark/dialysis_session/),
+so every number in `LEDGER.md` reproduces from a clone. `LEDGER.md` itself -- the
+decision record, and the document a clinical collaborator should read first -- is in
+this directory.

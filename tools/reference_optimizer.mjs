@@ -8,9 +8,9 @@
  * Carlo study reuses, so the uncertainty it reports is the uncertainty of the
  * exact procedure used here.
  *
- * The noise-free curve lives in the Host-side holdout directory (outside this
- * repository) and is used only by the external check. The true values moved INTO
- * the repository when the seal was retired: see PK_LEDGER.md.
+ * The noise-free curve and the true values now live inside the repository, under
+ * benchmark/pk/, together with the full PK ledger. The seal was retired: see
+ * PK_LEDGER.md.
  *
  * `dsh-autoresearch` cannot run on this Windows host (its StateLayout requires
  * POSIX owner-only mode bits, unsatisfiable on win32), so this script performs

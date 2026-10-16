@@ -295,25 +295,29 @@ extrapolation. See D6 for why this is excluded from the criteria.
 
 ## 7. Reproduction
 
-Run from this holdout directory (all scripts resolve the repository themselves;
-`BENCHMARK_REPO` overrides the default `<repo>`):
+**From a clone of the repository. No Host-side material is required.** Every script
+resolves the repository relative to its own location, so the clone may live anywhere;
+`BENCHMARK_REPO` overrides that if needed.
 
 ```sh
-# regenerate both datasets (deterministic; hashes must match §2)
-node generate_reference_data.mjs --write
-
-# fit the noisy curve
-node <repo>/tools/reference_optimizer.mjs
-
-# estimator sampling distribution (200 replicates, ~1.2 s)
-node monte_carlo.mjs 200
-
-# external check against the noise-free curve
-node external_check.mjs
-
-# objective comparison (200 replicates per objective)
-node compare_objectives.mjs 200
+cd benchmark/pk
+node generate_reference_data.mjs --write   # both fields; hashes must match §2
+node reproduce_stage2_fit.mjs              # §5  baseline 6.434202 -> optimum 3.392378
+node monte_carlo.mjs 200                   # §4  estimator sampling distribution
+node external_check.mjs                    # §5  external check on the noise-free curve
+node compare_objectives.mjs 200            # §D5 the objective comparison
+node compare_estimators.mjs 200            # D11  ML vs unweighted LS, active setting
+node compare_strategies.mjs 200            # §9  active vs uniform vs random vs oracle
+node check_active_session.mjs              # §10-11 score the finished session
 ```
+
+> **Note on the stage-3 interface.** `data/reference_points.csv` was deleted from
+> the repository in stage 3 so that an active chooser could not pre-read the whole
+> field, and the repository's `tools/reference_optimizer.mjs` was repointed at the
+> session's 12 observations. The generator therefore writes both fields into
+> `benchmark/pk/`, not into `data/`, so that reproducing these numbers does not
+> silently undo the active-loop interface. `reproduce_stage2_fit.mjs` exists
+> precisely because the stage-2 fit is otherwise no longer reachable.
 
 Determinism: the generator is pure arithmetic over a fully specified mulberry32
 PRNG plus Box-Muller, with no platform-dependent behaviour. Both optimizer and

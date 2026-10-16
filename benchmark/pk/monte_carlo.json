@@ -1,0 +1,69 @@
+{
+  "generatedBy": "benchmark/pk/monte_carlo.mjs",
+  "replicates": 200,
+  "seeds": "1..N (independent of the committed seed)",
+  "estimator": "fitParameters with 2 restarts, unweighted RMSE",
+  "noiseModel": {
+    "proportional": 0.32,
+    "additiveMgL": 0.056,
+    "citation": "Bos JC et al. Antimicrob Agents Chemother 2019;63(4):e02328-18, Table S1, carried forward by Duong A et al. Pharmaceutics 2022;14(7):1426."
+  },
+  "expectedNoiseRmseMgL": 3.9629080221137594,
+  "meanRmseAtTruthMgL": 3.904159208412762,
+  "sdRmseAtTruthMgL": 0.6125694475986444,
+  "samplingDistribution": {
+    "clearanceAtCrcl92LPerH": {
+      "truth": 3.44,
+      "mcMean": 3.5143352983347165,
+      "mcSd": 0.37262004363356677,
+      "bias": 0.07433529833471653,
+      "biasPercent": 2.160909835311527
+    },
+    "crclSlopePerMlMin": {
+      "truth": 0.00925,
+      "mcMean": 0.009428415896053241,
+      "mcSd": 0.003032068452943745,
+      "bias": 0.0001784158960532415,
+      "biasPercent": 1.9288204978728813
+    },
+    "volumeOfDistributionL": {
+      "truth": 22.4,
+      "mcMean": 22.46108443523694,
+      "mcSd": 1.8458909781761896,
+      "bias": 0.061084435236942625,
+      "biasPercent": 0.27269837159349386
+    }
+  },
+  "committedSeed": 20221426,
+  "committedFit": {
+    "clearanceAtCrcl92LPerH": 4.054940480406215,
+    "crclSlopePerMlMin": 0.009113202005991895,
+    "volumeOfDistributionL": 24.118180731352318
+  },
+  "committedZScores": {
+    "clearanceAtCrcl92LPerH": {
+      "fitted": 4.054940480406215,
+      "deviation": 0.6149404804062146,
+      "zScore": 1.6503150888226101,
+      "withinTwoSd": true
+    },
+    "crclSlopePerMlMin": {
+      "fitted": 0.009113202005991895,
+      "deviation": -0.00013679799400810426,
+      "zScore": -0.04511705330243819,
+      "withinTwoSd": true
+    },
+    "volumeOfDistributionL": {
+      "fitted": 24.118180731352318,
+      "deviation": 1.7181807313523194,
+      "zScore": 0.930813765095676,
+      "withinTwoSd": true
+    }
+  },
+  "coverage": {
+    "clearanceAtCrcl92LPerH": 0.95,
+    "crclSlopePerMlMin": 0.965,
+    "volumeOfDistributionL": 0.935
+  },
+  "elapsedSeconds": 1.3
+}

@@ -1,0 +1,50 @@
+{
+  "generated_by": "benchmark/pk/generate_reference_data.mjs",
+  "seed": 20221426,
+  "seed_rationale": "Read a priori off the primary citation (2022, volume 14, article 1426). Not tuned against any fit.",
+  "rng": "mulberry32 + Box-Muller, fully specified, platform independent",
+  "truth_parameters": {
+    "clearanceAtCrcl92LPerH": 3.44,
+    "crclSlopePerMlMin": 0.00925,
+    "volumeOfDistributionL": 22.4,
+    "crclReferenceMlMin": 92
+  },
+  "noise_model": {
+    "proportional": 0.32,
+    "additiveMgL": 0.056,
+    "citation": "Bos JC et al. Antimicrob Agents Chemother 2019;63(4):e02328-18, Table S1, carried forward by Duong A et al. Pharmaceutics 2022;14(7):1426."
+  },
+  "design": {
+    "bodyWeightKg": 80,
+    "doseMgPerKg": 5,
+    "infusionHours": 0.5,
+    "crclStrataMlMin": [
+      45,
+      60,
+      75,
+      92,
+      110,
+      130
+    ],
+    "sampleTimesH": [
+      0.5,
+      1,
+      2,
+      4,
+      8,
+      12
+    ]
+  },
+  "n_points": 36,
+  "files": {
+    "noisy": {
+      "path": "data/reference_points.csv (in repo)",
+      "sha256": "2ebaa6b9609820bcdf2622928d56a06819b67eb466029bd5ae9fc6303aa6d87c"
+    },
+    "noiseless": {
+      "path": "reference_points_noiseless.csv (holdout, outside repo)",
+      "sha256": "ef9b1c438267cc6ad66c96ef6f0a9b6f8c8b4c7b93b614f498ce78e610d25358"
+    }
+  },
+  "generated_at_utc": "2026-10-16T07:14:02.057Z"
+}

@@ -90,9 +90,12 @@ LEDGER.md files            stage decision records, one per stage directory
 
 tools/verify_all.mjs       one command that checks every result reproduces
 
-data/ evaluator/ model/ tools/   stage 1-3 PK benchmark
+data/ evaluator/ model/ tools/   stage 1-3 PK benchmark (the active-loop interface)
 dialyzer/                        stage 4 device model + real manufacturer data + LEDGER.md
 dialysis_session/                stage 5 patient model + PROTOCOL.md + LEDGER.md + estimator
+benchmark/                       the retired benchmark internals: generators, noise
+                                 simulators, sampling strategies, comparison experiments
+                                 and their recorded outputs, for all three benchmarks
 ```
 
 ## Decision records
@@ -102,12 +105,16 @@ a ledger inside this package: [`PK_LEDGER.md`](./PK_LEDGER.md),
 [`dialyzer/LEDGER.md`](./dialyzer/LEDGER.md),
 [`dialysis_session/LEDGER.md`](./dialysis_session/LEDGER.md).
 
-They were originally held outside the repository under a seal, because the
-repository was also a benchmark against an autonomous agent that must not be able
-to read the answers. The evaluation phase is over, the seal is retired, and the
-records are now part of the deliverable.
+The benchmark internals that produced them — generators, noise simulators, sampling
+strategies, comparison experiments and their recorded outputs — are in
+[`benchmark/`](./benchmark/), so **every benchmark number in every ledger reproduces
+from a clone.**
 
-**Consequence, stated plainly:** publishing `PK_LEDGER.md` discloses the stages 1–3
-benchmark's true values and seed, so **those stages are retired as a sealed
-evaluation.** They remain a methodological record. Nothing clinical depends on that
-seal.
+Both were originally held outside the repository under a seal, because the
+repository was also a benchmark against an autonomous agent that must not be able to
+read the answers. That evaluation phase is over, the seal is retired, and the
+material is now part of the deliverable.
+
+**Consequence, stated plainly:** the stages 1–3 true values, seed and noise-free
+curve are now published, so **stages 1–3 are retired as a sealed evaluation.** They
+remain a methodological record. Nothing clinical depends on that seal.

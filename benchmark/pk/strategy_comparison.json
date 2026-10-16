@@ -1,0 +1,102 @@
+{
+  "generatedBy": "benchmark/pk/compare_strategies.mjs",
+  "seeds": 200,
+  "budget": 12,
+  "estimator": "maximum likelihood, published combined error model",
+  "truth": {
+    "clearanceAtCrcl92LPerH": 3.44,
+    "crclSlopePerMlMin": 0.00925,
+    "volumeOfDistributionL": 22.4
+  },
+  "summary": {
+    "uniform12": {
+      "meanMare": 0.13122138187558763,
+      "medianMare": 0.11477477903532188,
+      "meanRelError": {
+        "clearanceAtCrcl92LPerH": 0.07468283042066046,
+        "crclSlopePerMlMin": 0.20461500768475108,
+        "volumeOfDistributionL": 0.11436630752135114
+      }
+    },
+    "random12": {
+      "meanMare": 0.20271350158432808,
+      "medianMare": 0.16037372507803327,
+      "meanRelError": {
+        "clearanceAtCrcl92LPerH": 0.11317791850853029,
+        "crclSlopePerMlMin": 0.3918149664838685,
+        "volumeOfDistributionL": 0.10314761976058572
+      }
+    },
+    "active": {
+      "meanMare": 0.12583247962818406,
+      "medianMare": 0.10513924156606633,
+      "meanRelError": {
+        "clearanceAtCrcl92LPerH": 0.07060721860501125,
+        "crclSlopePerMlMin": 0.19188097396426065,
+        "volumeOfDistributionL": 0.11500924631527987
+      }
+    },
+    "oracleStatic": {
+      "meanMare": 0.12742798436322345,
+      "medianMare": 0.1105761274332383,
+      "meanRelError": {
+        "clearanceAtCrcl92LPerH": 0.07204120847219199,
+        "crclSlopePerMlMin": 0.19174601768949176,
+        "volumeOfDistributionL": 0.11849672692798635
+      }
+    }
+  },
+  "comparisons": {
+    "uniform12": {
+      "meanDifference": -0.0053889022474036576,
+      "sdDifference": 0.0794081498176051,
+      "t": -0.9597325541630345,
+      "p": 0.33718981392846126,
+      "wins": 109,
+      "n": 200,
+      "meanReduction": 0.041067257259284506
+    },
+    "oracleStatic": {
+      "meanDifference": -0.0015955047350394746,
+      "sdDifference": 0.05347905091164855,
+      "t": -0.42191931170413527,
+      "p": 0.673083983019219,
+      "wins": 101,
+      "n": 200,
+      "meanReduction": 0.012520834752369092
+    },
+    "random12": {
+      "meanDifference": -0.07688102195614419,
+      "sdDifference": 0.16159755905422676,
+      "t": -6.7282070704420684,
+      "p": 1.727307186172311e-11,
+      "wins": 137,
+      "n": 200,
+      "meanReduction": 0.37925950346312676
+    }
+  },
+  "activeSamplingDistribution": {
+    "clearanceAtCrcl92LPerH": {
+      "truth": 3.44,
+      "mean": 3.5277476845674896,
+      "sd": 0.3166405991401653,
+      "cv": 0.09204668579655968,
+      "bias": 0.0877476845674896
+    },
+    "crclSlopePerMlMin": {
+      "truth": 0.00925,
+      "mean": 0.009550234179264145,
+      "sd": 0.0022957192988729623,
+      "cv": 0.24818587014842836,
+      "bias": 0.0003002341792641451
+    },
+    "volumeOfDistributionL": {
+      "truth": 22.4,
+      "mean": 23.176831783394743,
+      "sd": 3.4203601775458146,
+      "cv": 0.1526946507832953,
+      "bias": 0.7768317833947442
+    }
+  },
+  "elapsedSeconds": 74.9
+}

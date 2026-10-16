@@ -1,0 +1,21 @@
+{
+  "generatedBy": "compare_estimators.mjs",
+  "seeds": 200,
+  "rows": [
+    {
+      "strategy": "uniform12",
+      "mlMean": 0.13122138187558763,
+      "lsMean": 0.27398250269278646
+    },
+    {
+      "strategy": "random12",
+      "mlMean": 0.20271350158432808,
+      "lsMean": 0.28456123706811043
+    },
+    {
+      "strategy": "active",
+      "mlMean": 0.12583247962818406,
+      "lsMean": 0.659189445303483
+    }
+  ]
+}

@@ -2,11 +2,11 @@
 /**
  * ANALYSIS ESTIMATOR for the four-draw protocol.
  *
- * This is the code the protocol's §6.2 analysis plan refers to. It lives in the
- * repository, not in the Host-side holdout, because a clinical collaborator
- * receiving this package must be able to run the analysis. It contains no sealed
- * material: it estimates a patient's exchange parameter from that patient's own
- * measurements and reads off the equilibrated dose.
+ * This is the code the protocol's §6.2 analysis plan refers to. It was placed in
+ * the repository rather than with the benchmark internals, because a clinical
+ * collaborator receiving this package must be able to run the analysis. It
+ * contains no sealed material: it estimates a patient's exchange parameter from
+ * that patient's own measurements and reads off the equilibrated dose.
  *
  * WHAT IT DOES
  *   Given BUN measurements at chosen times during and after a dialysis session,

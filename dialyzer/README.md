@@ -136,6 +136,6 @@ the model has exactly one device-solute parameter:
 | `tools/validate_against_manufacturers.mjs` | Q1–Q4 checks against that data |
 
 The benchmark material (the noise simulator, the sampling designs and the comparison
-experiments) remains in a Host-side holdout outside this repository, so those numbers
-cannot be re-run from a clone of this package alone. `LEDGER.md` -- the decision
-record -- is now in this package.
+experiments) is in [`benchmark/dialyzer/`](../benchmark/dialyzer/), so every number
+in `LEDGER.md` reproduces from a clone. `LEDGER.md` itself -- the decision record --
+is in this directory.

@@ -111,21 +111,29 @@ candidate agent could not read the answer:
 - the **true parameter values**;
 - the **seed and generator**.
 
-The first two are still outside the repository. **The true parameter values and the
-seed are now published here**, in [`PK_LEDGER.md`](./PK_LEDGER.md) — that is why
-this benchmark is retired as an evaluation (§ title banner).
+**All three are now inside the repository.** The true parameter values and the seed
+are published in [`PK_LEDGER.md`](./PK_LEDGER.md), and the noise-free curve — 
+previously identified only by hash — is in `benchmark/pk/`. That is why this
+benchmark is retired as an evaluation (§ title banner).
 
-The noise-free curve remains identified by hash rather than disclosed, so the exact
-file can be audited without being published:
+The noise-free curve is still accompanied by its hash, so a regenerated copy can be
+checked against the one the published results were computed from:
 
 ```
 noise-free curve SHA-256: ef9b1c438267cc6ad66c96ef6f0a9b6f8c8b4c7b93b614f498ce78e610d25358
 ```
 
-The remaining Host-side material — the strategy implementations, the noise
-simulator and the comparison experiments — is still outside this repository, so the
-numbers in `PK_LEDGER.md` cannot all be re-run from a clone of this package alone.
-That is recorded here rather than left as a surprise.
+The remaining benchmark material — the strategy implementations, the noise
+simulator, the comparison experiments and the data generator — is in
+[`benchmark/pk/`](./benchmark/pk/). **Every number in `PK_LEDGER.md` therefore
+reproduces from a clone**, with no Host-side material required:
+
+```sh
+node benchmark/pk/generate_reference_data.mjs --write   # regenerate both fields
+node benchmark/pk/reproduce_stage2_fit.mjs              # ledger §5: 6.434202 -> 3.392378
+node benchmark/pk/monte_carlo.mjs 200                   # ledger §4 sampling distribution
+node benchmark/pk/external_check.mjs                    # ledger §5 external check
+```
 
 **Honest limitation.** A Git worktree does not confine filesystem access — the
 plugin says so itself. The boundary was always protocol-level, not a sandbox.

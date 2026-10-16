@@ -20,13 +20,13 @@
     "benchmark_status": "RETIRED as a sealed evaluation. See the banner in PK_BENCHMARK.md."
   },
   "noise_free_holdout": {
-    "role": "External check ONLY. Never read by evaluator/judge.mjs and never used for fitting. Still located outside the Git repository, so the numbers in PK_LEDGER.md cannot all be re-run from a clone of this package alone.",
-    "location": "Host-side holdout directory; not recorded in this repository.",
+    "role": "External check ONLY. Never read by evaluator/judge.mjs and never used for fitting. Now inside the repository, so every number in PK_LEDGER.md is reproducible from a clone.",
+    "location": "benchmark/pk/reference_points_noiseless.csv, regenerated deterministically by benchmark/pk/generate_reference_data.mjs --write",
     "sha256": "ef9b1c438267cc6ad66c96ef6f0a9b6f8c8b4c7b93b614f498ce78e610d25358",
-    "contains": "the noise-free curve, the generator, the noise simulator, the sampling strategies and all comparison experiments. The LEDGER was formerly here and has since moved into the repository.",
+    "contains": "the noiseless curve is accompanied, inside benchmark/pk, by the generator, the noise simulator, the sampling strategies and all comparison experiments.",
     "identified_by": "sha256 of the noise-free CSV, so the exact file can be audited without being disclosed"
   },
-  "this_file_sha256_note": "The noisy 36-point table that earlier stages committed here has been removed: leaving it in the worktree would let a chooser pre-read the whole dataset and turn the active loop back into a static fit. The simulator that owns it lives in the Host-side holdout.",
+  "this_file_sha256_note": "The noisy 36-point table that earlier stages committed here has been removed: leaving it in the worktree would let a chooser pre-read the whole dataset and turn the active loop back into a static fit. The simulator that owns it is benchmark/pk/generate_reference_data.mjs.",
   "regimen": {
     "dose_mg": 400,
     "dose_mg_per_kg": 5,

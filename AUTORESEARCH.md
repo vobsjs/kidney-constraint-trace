@@ -88,11 +88,11 @@ Notes:
   they are protected by the evaluator policy. `tools/` is outside `mutable_globs`
   and is therefore rejected if a candidate touches it, but it is not hash-frozen.
 - The declared `dataset` files are the **noisy** fitting target and its regimen
-  metadata. The **noise-free** curve is deliberately not declared and does not
-  exist in this repository: it lives in a Host-side holdout outside the worktree,
-  whose location is not recorded here, so it is unreachable through any input the
-  evaluator or a candidate can see. Only the Host-side external check opens it.
-  Its SHA-256 is published in `data/dataset.json` so it can be audited without
+  metadata. The **noise-free** curve is not declared, so the evaluator never opens
+  it; it now sits in `benchmark/pk/` along with the rest of the retired benchmark.
+  Its SHA-256 is recorded in `data/dataset.json` and in `PK_LEDGER.md` so it can be
+  audited independently. See the retirement banner in `PK_BENCHMARK.md` -- a
+  candidate can now read the answer, so this is no longer a blind evaluation.
   being disclosed.
 - The registry is validated at load time. **An app restart is required** for the
   change to take effect; confirm with `dsh --profile <name> --dump-config` (note

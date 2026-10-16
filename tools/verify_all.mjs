@@ -55,6 +55,36 @@ check({
   extract: grab(/optimised RMSE \(mg\/L\)\s+: ([\d.]+)/),
 })
 
+// ------------------------------------------- stage 1-3 benchmark internals, from a clone
+check({
+  name: 'PK ledger §5: stage-2 baseline RMSE reproduces from the benchmark field',
+  command: process.execPath,
+  args: ['benchmark/pk/reproduce_stage2_fit.mjs'],
+  expect: '6.434202',
+  extract: grab(/baseline RMSE \(mg\/L\)\s+([\d.]+)/),
+})
+check({
+  name: 'PK ledger §5: stage-2 optimum RMSE reproduces',
+  command: process.execPath,
+  args: ['benchmark/pk/reproduce_stage2_fit.mjs'],
+  expect: '3.392378',
+  extract: grab(/optimum  RMSE \(mg\/L\)\s+([\d.]+)/),
+})
+check({
+  name: 'PK ledger §4: Monte Carlo sampling mean reproduces',
+  command: process.execPath,
+  args: ['benchmark/pk/monte_carlo.mjs', '200'],
+  expect: '3.514335',
+  extract: grab(/clearanceAtCrcl92LPerH\s+3\.440000\s+([\d.]+)/),
+})
+check({
+  name: 'PK ledger §5: external check on the noise-free curve reproduces',
+  command: process.execPath,
+  args: ['benchmark/pk/external_check.mjs'],
+  expect: '8.5460e-1',
+  extract: grab(/recovered  ([\d.eE+-]+)/),
+})
+
 // ---------------------------------------------------------------- stage 4
 check({
   name: 'dialyzer: forward check against real manufacturer data',
