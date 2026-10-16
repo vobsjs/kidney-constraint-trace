@@ -151,6 +151,36 @@ check({
   expect: '0.0030',
   extract: grab(/true Kc 16xV[\s\S]*?error ([\d.]+)/),
 })
+// ---------------------------------------------------------------- stage 6
+check({
+  name: 'artificial kidney: regeneration module reproduces the published capacity',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_analysis.mjs'],
+  expect: '43.70 g',
+  extract: grab(/cartridge fully loaded at\s+: ([\d.]+ g)/),
+})
+check({
+  name: 'artificial kidney: cartridge lifetime matches mass balance',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_analysis.mjs'],
+  expect: '2.78 days',
+  extract: grab(/time to 95% utilisation\s+: ([\d.]+ days)/),
+})
+check({
+  name: 'artificial kidney: closed loop degrades the membrane need 14x',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_analysis.mjs'],
+  expect: '16.56',
+  extract: grab(/required clearance\s+([\d.]+) mL\/min/),
+})
+check({
+  name: 'artificial kidney: continuous therapy removes the BUN swing',
+  command: process.execPath,
+  args: ['artificial_kidney/tools/run_analysis.mjs'],
+  expect: '0.0',
+  extract: grab(/continuous \(regenerated loop\)\s+[\d.]+\s+[\d.]+\s+([\d.]+)/),
+})
+
 check({
   name: 'study design: sample size at the model SD estimate',
   command: process.execPath,

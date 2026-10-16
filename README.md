@@ -18,6 +18,7 @@ clinical study protocol with a validated analysis pipeline**.
 | 1–3 | repo root (`data/`, `evaluator/`, `model/`, `tools/`) | A gentamicin creatinine-clearance PK benchmark: deterministic fit → stochastic → active experiment loop | **None.** Methodological development on one drug in one population. |
 | 4 | [`dialyzer/`](./dialyzer/README.md) | A haemodialyzer as a counter-current mass-transfer device; KoA identified from bench clearance measurements | The device itself. Validated against 120 real EN ISO 8637-1:2020 measurements. |
 | 5 | [`dialysis_session/`](./dialysis_session/README.md) | That device coupled to a two-pool human urea model; post-dialysis rebound and the sampling design | The clinical quantity: **equilibrated Kt/V**, the dose actually delivered. |
+| 6 | [`artificial_kidney/`](./artificial_kidney/README.md) | The system, decomposed by function: filtration + regeneration + compartment, closing the dialysate loop | **Continuity** — the functional difference between dialysis and a kidney. |
 
 **Stages 1–3 are not needed to understand or run the study.** They are kept
 because the estimator and design machinery were developed there and are reused
@@ -34,6 +35,7 @@ unchanged, and because their negative results are part of the record.
 | Understand the device physics | [`dialyzer/README.md`](./dialyzer/README.md) |
 | Understand the patient model | [`dialysis_session/README.md`](./dialysis_session/README.md) |
 | Understand the original PK benchmark | [`PK_BENCHMARK.md`](./PK_BENCHMARK.md) |
+| Understand what limits a wearable artificial kidney | [`artificial_kidney/README.md`](./artificial_kidney/README.md) |
 
 ## The headline clinical result
 
@@ -93,6 +95,7 @@ tools/verify_all.mjs       one command that checks every result reproduces
 data/ evaluator/ model/ tools/   stage 1-3 PK benchmark (the active-loop interface)
 dialyzer/                        stage 4 device model + real manufacturer data + LEDGER.md
 dialysis_session/                stage 5 patient model + PROTOCOL.md + LEDGER.md + estimator
+artificial_kidney/               stage 6 functional modules + closed-loop system
 benchmark/                       the retired benchmark internals: generators, noise
                                  simulators, sampling strategies, comparison experiments
                                  and their recorded outputs, for all three benchmarks
